@@ -18,6 +18,9 @@ description: A Jekyll theme for documentation
 baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "https://solayk.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
+theme: "just-the-docs" # SOLAYK : 삭제시 검색 불가
+remote_theme: pmarsceill/just-the-docs
+
 permalink: pretty
 exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile"
 , "docs/tests/"
@@ -122,5 +125,3 @@ compress_html:
   profile: false
   # ignore:
   #   envs: all
-
-# theme: "just-the-docs"
