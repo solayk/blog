@@ -118,7 +118,7 @@
   padding-top: $sp-3;
   padding-bottom: $sp-3;
   color: $body-heading-color;
-  font-family: Noto Sans Kr; // SOLAYK : 폰트변경
+  font-family: 'Noto Sans KR'; // SOLAYK : 폰트변경
   @include fs-6;
 
   @include mq(md) {
