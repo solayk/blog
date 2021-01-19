@@ -187,7 +187,7 @@ vagrant up
 
 프로토콜 버퍼는 데이터를 연속된 비트로 만들고, 이렇게 만들어진 비트를 해석해 원래의 데이터를 만들 수도 있다. 현재 다양한 시스템이 이기종 혹은 내부 프로세스 간의 통신에 프로토콜 버퍼를 사용하고 있으며, 하둡2도 내부 데몬 간의 데이터 통신을 위해 프로토콜 버퍼를 적용했다. ( 도서 ‘시작하세요 하둡프로그래밍’에서 언급하긴 했지만 설치 없어도 우리가 구동하는 것에는 문제가 되지 않았지만 혹시 몰라 설치해본다 )
 
-```BASH
+```bash
 su root
 yum install -y autoconf automake libtool curl gcc-c++ unzip
 cd /tmp
@@ -216,7 +216,7 @@ h. ln -s /opt/jdk/1.8.0_131 /opt/jdk/current 심볼릭 링크
 
 편의상 MobaXterm의 MultiExec(여러개의 가상장치 동시 조작) 기능 사용을 추천한다.
 
-```BASH
+```bash
 $ cd /tmp
 $ wget  https://archive.apache.org/dist/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz
 $ tar -xvzf hadoop-2.7.7.tar.gz
@@ -229,7 +229,7 @@ $ ln -s /opt/hadoop/2.7.7 /opt/hadoop/current
 
 hadoop 사용자 추가
 
-```BASH
+```bash
 $ useradd hadoop
 $ passwd hadoop   ( 비밀번호도 hadoop 으로 - 비밀번호 입력시는 글자표시 안됨  )
 $ chown -R hadoop:hadoop /opt/hadoop/  ( 루트에서 만든 파일의 권한을 hadoop에게 권함)
@@ -238,7 +238,7 @@ $ su - hadoop
 
 권한 관련 설정 변경
 
-```BASH
+```bash
 $ vi /etc/pam.d/su
 ```
 
@@ -252,14 +252,14 @@ $ vi /etc/pam.d/su
 
 자바 및 하둡 환경변수 추가
 
-```BASH
+```bash
 $ cd ~
 $ vi ~/.bash_profile
 ```
 
 vi 에디터에서 아래 내용을 추가한다.
 
-```BASH
+```bash
 #### HADOOP 2.7.7 start ############
 PATH=$PATH:$HOME/bin
 export HADOOP_HOME=/opt/hadoop/current
@@ -274,7 +274,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 환경변수 설정 적용 후 자바, 하둡 버전 확인
 
-```BASH
+```bash
 $ source ~/.bash_profile
 $ java -version
 $ hadoop version
