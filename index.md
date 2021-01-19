@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: 홈
 nav_order: 1
 description: "Just the Docs is a responsive Jekyll theme with built-in search that is easily customizable and hosted on GitHub Pages."
 permalink: /
@@ -59,12 +59,6 @@ $ bundle exec jekyll serve
 4. Point your web browser to [http://localhost:4000](http://localhost:4000)
 
 If you're hosting your site on GitHub Pages, [set up GitHub Pages and Jekyll locally](https://help.github.com/en/articles/setting-up-your-github-pages-site-locally-with-jekyll) so that you can more easily work in your development environment.
-
-### Configure Just the Docs
-
-- [See configuration options]({{ site.baseurl }}{% link docs/configuration.md %})
-
----
 
 ## About the project
 

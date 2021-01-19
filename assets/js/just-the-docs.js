@@ -102,7 +102,7 @@ function initSearch() {
       // });
 
       var index = lunr(function(){
-        // this.pipeline.reset();
+        this.pipeline.reset();
         this.pipeline.add(
           lunr.stopWordFilter,
           lunr.stemmer
