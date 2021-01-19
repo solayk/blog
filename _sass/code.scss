@@ -114,6 +114,10 @@ figure.highlight {
   }
 }
 
+.highlight > code {
+  color: white; // SOLAYK : 코드 기본 색상 흰색
+}
+
 .highlight .c {
   color: #586e75;
 } // comment //
@@ -212,9 +216,11 @@ figure.highlight {
 .highlight .s {
   color: #2aa198;
 } // literal.string //
+
 .highlight .na {
-  color: #555;
+  color: white; // SOLAYK : 코드 기본 색상 흰색
 } // name.attribute //
+
 .highlight .nb {
   color: #b58900;
 } // name.builtin //
@@ -236,15 +242,19 @@ figure.highlight {
 .highlight .nf {
   color: #268bd2;
 } // name.function //
+
 .highlight .nl {
-  color: #555;
+  color: white; // SOLAYK : 코드 기본 색상 흰색
 } // name.label //
+
 .highlight .nn {
   color: #93a1a1;
 } // name.namespace //
+
 .highlight .nx {
-  color: #555;
+  color: white; // SOLAYK : 코드 기본 색상 흰색
 } // name.other //
+
 .highlight .py {
   color: #93a1a1;
 } // name.property //
@@ -324,6 +334,11 @@ figure.highlight {
 //
 // Code examples (rendered)
 //
+
+code.highlighter-rouge {
+  color: white; // SOLAYK : 코드 기본 색상 흰색
+}
+
 
 .code-example {
   padding: $sp-3;

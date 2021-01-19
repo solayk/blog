@@ -117,7 +117,7 @@
   align-items: center;
   padding-top: $sp-3;
   padding-bottom: $sp-3;
-  color: $body-heading-color;
+  color: $solarized-blue; // SOLAYK : 타이틀 폰트 색상
   font-family: 'Noto Sans KR'; // SOLAYK : 폰트변경
   @include fs-6;
 

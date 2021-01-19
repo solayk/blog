@@ -66,6 +66,8 @@ Hive(HiveQL) 하둡 처리 좀 더 수월하게
 
 작은 규모 하둡을 구축하고, 기술력과 노하우를 쌓고 기업 스스로 해결할 수 있는 방향을 찾는 것이 하둡을 도입하는 가장 올바른 방향이다 <시작하세요 하둡 프로그래밍>
 
+이 글에선 하둡으로 분산처리를 구현하기 위해 Master 역할 1대, Slave 역할 2대 = 총 3대의 가상장치(Virtual Machine)를 설치한다. 현업에서는 20~30대의 Slave를 운영한다고 한다.
+
 
 
 # 1. 윈도우
@@ -73,8 +75,6 @@ Hive(HiveQL) 하둡 처리 좀 더 수월하게
 이 글에선 Windows 10 Home Edition 버전으로 진행한다.
 
 ## 1.1 Virtual Box 설치
-
-분산처리 구현을 위해 Master 역할 1대, Slave 역할 2대 = 총 3대의 가상장치(Virtual Machine)를 설치한다.
 
 Virtual Box https://www.virtualbox.org/   ⇒ Download ⇒ Vitural Box Old builds ⇒
 
@@ -92,7 +92,7 @@ Vagrant의 Default 가상장치는 Virtual Box 이다.
 
 명령 프롬프트(CMD)를 관리자 권한으로 실행하여 vagrant 설치 폴더로 이동, 아래 명령어를 실행한다.
 
-```bash
+```
 cd C:\HashiCorp\Vagrant\
 vagrant init
 ```
@@ -204,7 +204,7 @@ mv protobuf-2.5.0  /opt/
 
 
 
-JDK 8 설치
+## 2.2 JDK 8 설치
 
 h. ln -s /opt/jdk/1.8.0_131 /opt/jdk/current 심볼릭 링크
 
@@ -212,7 +212,7 @@ h. ln -s /opt/jdk/1.8.0_131 /opt/jdk/current 심볼릭 링크
 
 
 
-하둡 설치(nn01 / dn01 / dn02)
+## 2.3 하둡 설치(nn01 / dn01 / dn02)
 
 편의상 MobaXterm의 MultiExec(여러개의 가상장치 동시 조작) 기능 사용을 추천한다.
 
@@ -279,6 +279,277 @@ $ source ~/.bash_profile
 $ java -version
 $ hadoop version
 ```
+
+
+
+비밀번호없이 각노드를 접속할 수 있도록 공개키 공유(SSH)
+
+*아래 작업은 가상머신에서 직접한다.
+
+```bash
+$ vi /etc/hosts
+```
+
+모든 내용 지우고, 아래 내용 복사 붙여넣기 후 :wq 명령어로 저장한다.
+
+```
+192.168.56.101 nn01
+192.168.56.102 dn01
+192.168.56.103 dn02
+```
+
+다시 MobaXterm의 MultiExec로 넘어와 아래를 입력하면 서로 다른 키 값이 생성된다.
+
+```bash
+$ ssh-keygen
+```
+
+이제 패스워드 없이 ssh로 계정간 이동이 가능하다. 테스트한다.
+
+```bash
+$ ssh dn01
+$ ssh dn02
+$ ssh nn01
+```
+
+
+
+## 2.4 하둡 설정
+
+모든 가상장치에 동일하게 설정한다. 
+
+MobaXterm으로 동시 작업 시 문제 발생 가능성이 있으므로 가급적 nn01에 먼저 설정한 이후 ssh 연결한 다른 가상장치에 복사한다.
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/core-site.xml
+```
+
+```
+<configuration>
+
+<property>
+<name>fs.defaultFS</name>
+<value>hdfs://nn01:9000</value>
+</property>
+
+</configuration>
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/hdfs-site.xml
+```
+
+```
+<configuration>
+
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+
+<property>
+<name>dfs.namenode.http-address</name>
+<value>nn01:50070</value>
+</property>
+
+<property>
+<name>dfs.namenode.secondary.http-address</name>
+<value>nn01:50090</value>
+</property>
+
+<property>
+<name>dfs.namenode.name.dir</name>
+<value>file:/home/hadoop/hadoop_data/hdfs/namenode</value>
+</property>
+
+<property>
+<name>dfs.datanode.data.dir</name>
+<value>file:/home/hadoop/hadoop_data/hdfs/datanode</value>
+</property>
+
+<property>
+<name>dfs.namenode.checkpoint.dir</name>
+<value>file:/home/hadoop/hadoop_data/hdfs/namesecondary</value>
+</property>
+
+<property>
+<name>dfs.webhdfs.enabled</name>
+<value>true</value>
+</property>
+
+</configuration>
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/yarn-site.xml
+```
+
+```
+<configuration>
+
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+
+<property>
+<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+<property>
+<name>yarn.resourcemanager.scheduler.address</name>
+<value>nn01:8030</value>
+</property>
+
+<property>
+<name>yarn.resourcemanager.resource-tracker.address</name>
+<value>nn01:8031</value>
+</property>
+
+<property>
+<name>yarn.resourcemanager.address</name>
+<value>nn01:8032</value>
+</property>
+
+<property>
+<name>yarn.resourcemanager.hostname</name>
+<value>nn01</value>
+</property>
+
+</configuration>
+```
+
+```bash
+$ cp /opt/hadoop/current/etc/hadoop/mapred-site.xml.template /opt/hadoop/current/etc/hadoop/mapred-site.xml
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/mapred-site.xml
+```
+
+```
+<configuration>
+
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+
+<property>
+<name>mapreduce.jobtracker.hosts.exclude.filename</name>
+<value>$HADOOP_HOME/etc/hadoop/exclude</value>
+</property>
+
+<property>
+<name>mapreduce.jobtracker.hosts.filename</name>
+<value>$HADOOP_HOME/etc/hadoop/include</value>
+</property>
+
+</configuration>
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/masters
+```
+
+```
+nn01
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/slaves
+```
+
+```
+dn01
+dn02
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/hadoop-env.sh
+```
+
+```
+# The java implementation to use.
+export JAVA_HOME=/opt/jdk/current
+```
+
+```bash
+$ vi /opt/hadoop/current/etc/hadoop/yarn-env.sh
+```
+
+```
+# some Java parameters
+export JAVA_HOME=/opt/jdk/current
+```
+
+설정을 마쳤으니 dn01, dn02에 복사한다.
+
+nn01에서 root 계정으로 아래 명령어 실행
+
+```bash
+$ scp -r /opt/hadoop/* dn01:/opt/hadoop
+```
+
+yes 입력, 비밀번호 입력 후 기다린다. 완료되면 다시 한번 nn01에서 root 계정으로
+
+```bash
+$ scp -r /opt/hadoop/* dn02:/opt/hadoop
+```
+
+yes 입력, 비밀번호 입력 후 기다린다.
+
+dn01에서 root 계정으로 심볼릭링크와 소유자를 다시 설정한다.
+
+```bash
+$ rm -rf /opt/hadoop/current
+$ ln -s /opt/hadoop/2.7.7 /opt/hadoop/current
+$ chown -R hadoop:hadoop /opt/hadoop/
+```
+
+dn02에서도 위 과정을 진행한다.
+
+```bash
+$ rm -rf /opt/hadoop/current
+$ ln -s /opt/hadoop/2.7.7 /opt/hadoop/current
+$ chown -R hadoop:hadoop /opt/hadoop/
+```
+
+node 디렉토리 생성
+
+nn01(master)
+
+```bash
+$ mkdir -p ~/hadoop_data/hdfs/namenode
+$ mkdir -p ~/hadoop_data/hdfs/namesecondary
+```
+
+dn01(slave)
+
+```bash
+$ mkdir -p ~/hadoop_data/hdfs/datanode
+```
+
+dn02(slave)
+
+```bash
+$ mkdir -p ~/hadoop_data/hdfs/datanode
+```
+
+nn01(master)
+
+```bash
+$ hadoop namenode -format
+```
+
+에러가 발생하지 않으면, 아래 명령어로 하둡을 기동한다.
+
+```bash
+$ start-all.sh
+```
+
+
 
 
 
