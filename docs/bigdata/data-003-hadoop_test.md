@@ -192,6 +192,8 @@ $ yarn jar /home/hadoop/source/lab1.jar sample.WordCount /input/data /output/wor
 
 *주의: 존재하는 폴더일 경우 실행하지 않는다.
 
+**만일 eclipse pom.xml에 maven-jar-plugin 설치했다면 위 명령어에서 클래스 이름 (sample.wordCount)을 빼고 실행한다.
+
 실행으로 생성된 파일, 폴더를 확인한다.
 
 ```bash
@@ -207,6 +209,12 @@ $ hdfs dfs -cat /output/wordcount/part-r-00000
 ```
 
 
+
+터미널 종료 시 반드시 하둡 종료 명령어를 실행한다.
+
+```bash
+$ stop-all.sh
+```
 
 
 
