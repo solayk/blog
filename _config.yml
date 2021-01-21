@@ -82,7 +82,7 @@ nav_sort: case_sensitive # Capital letters sorted before lowercase
 
 # Back to top link
 back_to_top: true
-back_to_top_text: "Back to top"
+back_to_top_text: "맨 위로"
 
 footer_content: "Copyright &copy; 2021 Kim Young Kwon. Hosted on GitHub Pages. Using <a href=\"https://github.com/pmarsceill/just-the-docs\">Just the Docs</a>"
 
@@ -93,7 +93,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 
 
 # Footer "Edit this page on GitHub" link text
-gh_edit_link: true # show or hide edit this page link
+gh_edit_link: false # show or hide edit this page link # SOLAYK : 비활성화
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: "https://github.com/pmarsceill/just-the-docs" # the github URL for your repo
 gh_edit_branch: "master" # the branch that your docs is served from
