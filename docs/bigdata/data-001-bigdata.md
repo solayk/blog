@@ -24,7 +24,7 @@ permalink: docs/bigdata
 
 ![Type of Big Data](https://user-images.githubusercontent.com/73984112/104975612-80c81300-5a3e-11eb-9d1b-bdeae774045a.png)
 
-출처: https://www.hackbelgrade.com/blog/big-data-introduction/
+그림 출처: https://www.hackbelgrade.com/blog/big-data-introduction/
 
 1. 정형 데이터
 
@@ -38,15 +38,23 @@ permalink: docs/bigdata
 
 
 
-## 1.2 데이터 발생 속도
+## 1.2 빅데이터 특징 5V
 
 ![Big Data Volume](https://user-images.githubusercontent.com/73984112/104974931-abb16780-5a3c-11eb-9787-c96cf54cdd0d.png)
 
+Volume 규모
+
+Variety 다양성
+
+Velocity 속도
+
+V 정확성
+
+Value 가치
 
 
 
-
-
+데이터 발생속도
 
 하루 250경 Btye 비정형 데이터
 
