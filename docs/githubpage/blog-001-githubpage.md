@@ -26,9 +26,29 @@ GitHub.io, GitHub Pages를 통해 Git Repository 내용을 변환기(Generator)�
 
 
 
-윈도우 10 리눅스 설치
+## 윈도우 10 리눅스 설치
 
-WSL 에 CentOS 7 설치
+WSL 또는 WSL2에 리눅스 하위 시스템을 설치할 수 있다.
+
+1. 제어판에서 윈도우 기능 켜기/끄기에서 윈도우 리눅스 하위 시스템을 체크하여 설치한다.
+
+2. 재시작 후 Microsoft Store에서 원하는 OS를 다운로드한다.
+
+   ![image](https://user-images.githubusercontent.com/5028400/34940910-c77e4516-fa34-11e7-9ba6-57a841f56271.png)
+
+   만일 CentOS 7 설치를 원한다면 https://github.com/yuk7/CentWSL/releases/tag/7.0.1905.1에서 다운로드 후 CentOS.exe 파일을 관리자모드로 실행해 설치하고(첫번째 실행은 설치), 다시 CentOS.exe 파일을 관리자모드로 실행한다. (두번째 실행부터 프로그램 실행) 마지막으로 yum 업데이트를 한다. 
+
+   ```bash
+   $ yum -y update
+   ```
+
+   자세한 사항은 아래 링크를 참고한다.
+
+   https://m.blog.naver.com/aim4u/221650979255
+
+   https://www.how2shout.com/how-to/install-centos-on-windows-10-subsystem-for-linux.html
+
+   https://docs.microsoft.com/ko-kr/windows/wsl/about
 
 
 
@@ -51,7 +71,7 @@ $ curl -sSL https://get.rvm.io | bash -s stable --ruby
 
 
 
-![image](https://user-images.githubusercontent.com/5028400/34940910-c77e4516-fa34-11e7-9ba6-57a841f56271.png)
+
 
 
 
@@ -120,7 +140,7 @@ $ bundle install
 BASH 에 들어가 아래 명령어 실행 후
 
 ```BASH
-$ bundle exec jeckyll serve
+$ bundle exec jekyll serve
 ```
 
 서버가 돌아가면 http://127.0.0.1:4000에 접속해 결과물을 확인한다.
