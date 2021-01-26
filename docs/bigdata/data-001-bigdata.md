@@ -10,7 +10,18 @@ permalink: docs/bigdata
 
 업데이트: 2021.01.19
 
-[TOC]
+
+
+{: .no_toc }
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
 
 
 

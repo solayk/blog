@@ -6,7 +6,20 @@ parent: 빅데이터
 
 업데이트: 2021.01.19
 
-[TOC]
+
+
+{: .no_toc }
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+
 
 # 하둡 hadoop
 
@@ -26,7 +39,7 @@ Scale Out 분산처리
 
 (설치부터 어려워 클라우데라, 호튼웍스 같은 유료 서비스 존재)
 
-![Hadoop-Ecosystem-2-01-1024x536](C:\Work\blog\003 Hadoop\Hadoop-Ecosystem-2-01-1024x536.jpg)
+
 
 개발자 역할 데이터 시각화까지, 분석은 분석가 역할
 
@@ -107,61 +120,37 @@ vagrant init
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-      config.ssh.insert_key = false
-
-      config.vm.define :nn01 do |nn01_config|
-
+ 
+ 	config.ssh.insert_key = false
+ 
+	 config.vm.define :nn01 do |nn01_config|
          nn01_config.vm.box = "centos/7"
+         nn01_config.vm.hostname = "nn01"
+         nn01_config.vm.network "private_network", ip: "192.168.56.101"
+         nn01_config.vm.provider :virtualbox do |vb|
+             vb.name = "nn01"
+             vb.memory = "4096"
+         end
+      end
 
-​        nn01_config.vm.hostname = "nn01"
-
-​        nn01_config.vm.network "private_network", ip: "192.168.56.101"
-
-​        nn01_config.vm.provider :virtualbox do |vb|
-
-​            vb.name = "nn01"
-
-​            vb.memory = "4096"
-
-​        end
-
-​     end
-
-​    config.vm.define :dn01 do |dn01_config|
-
-​        dn01_config.vm.box = "centos/7"
-
+     config.vm.define :dn01 do |dn01_config|
+         dn01_config.vm.box = "centos/7"
 ​        dn01_config.vm.hostname = "dn01"
-
 ​        dn01_config.vm.network "private_network", ip: "192.168.56.102"
-
 ​        dn01_config.vm.provider :virtualbox do |vb|
-
 ​            vb.name = "dn01"
-
 ​            vb.memory = "4096"
-
 ​        end
-
 ​    end
 
-config.vm.define :dn02 do |dn02_config|
-
+	config.vm.define :dn02 do |dn02_config|
 ​        dn02_config.vm.box = "centos/7"
-
 ​        dn02_config.vm.hostname = "dn02"
-
 ​        dn02_config.vm.network "private_network", ip: "192.168.56.103"
-
 ​        dn02_config.vm.provider :virtualbox do |vb|
-
 ​            vb.name = "dn02"
-
 ​            vb.memory = "4096"
-
 ​        end
-
 ​    end
 
 end

@@ -4,7 +4,20 @@ title: 하둡 에코시스템
 parent: 빅데이터
 ---
 
-[TOC]
+
+
+{: .no_toc }
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+
 
 # 하둡 에코시스템 Hadoop Ecosystem
 

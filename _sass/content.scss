@@ -37,7 +37,7 @@
 
   ol {
     list-style-type: none;
-    counter-reset: step-counter;
+    // counter-reset: step-counter;
 
     > li {
       position: relative;
@@ -47,8 +47,8 @@
         top: 0.2em;
         left: -1.6em;
         color: $grey-dk-000;
-        content: counter(step-counter);
-        counter-increment: step-counter;
+        // content: counter(step-counter);
+        // counter-increment: step-counter;
         @include fs-3;
 
         @include mq(sm) {
@@ -57,12 +57,12 @@
       }
 
       ol {
-        counter-reset: sub-counter;
+        // counter-reset: sub-counter;
 
         li {
           &::before {
-            content: counter(sub-counter, lower-alpha);
-            counter-increment: sub-counter;
+            // content: counter(sub-counter, lower-alpha);
+            // counter-increment: sub-counter;
           }
         }
       }
