@@ -103,15 +103,16 @@ vagrant init
 
 
 
+```
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-​     config.ssh.insert_key = false
+      config.ssh.insert_key = false
 
-​     config.vm.define :nn01 do |nn01_config|
+      config.vm.define :nn01 do |nn01_config|
 
-​        nn01_config.vm.box = "centos/7"
+         nn01_config.vm.box = "centos/7"
 
 ​        nn01_config.vm.hostname = "nn01"
 
@@ -164,6 +165,7 @@ config.vm.define :dn02 do |dn02_config|
 ​    end
 
 end
+```
 
 *주의: 웹페이지에서 복사 붙여넣기 할 경우 공백이나 보이지 않는 문자가 포함되어 오류가 발생할 수 있음
 

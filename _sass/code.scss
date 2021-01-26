@@ -59,10 +59,16 @@ div.highlighter-rouge {
   -webkit-overflow-scrolling: touch;
 
   div.highlight,
-  pre.highlight,
   code {
     font-size: 90%;
     padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  pre.highlight {
+    font-size: 120%;
+    padding: 10px;
     margin: 0;
     border: 0;
   }
