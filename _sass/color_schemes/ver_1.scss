@@ -1,6 +1,6 @@
 
 $sidebar-color: $solarized-light-000;
-
+$border-color: $solarized-light-000;
 
 $body-text-color: $grey-dk-300;
 $body-heading-color: $grey-dk-300;
@@ -12,3 +12,6 @@ $link-color: $solarized-base-002;
 
 
 $code-background-color: $solarized-code-background;
+
+
+$feedback-color: darken($sidebar-color, 14%);

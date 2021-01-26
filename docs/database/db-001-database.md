@@ -10,7 +10,7 @@ permalink: docs/database
 
 
 
-# RDBMS
+# Database
 
 
 
