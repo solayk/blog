@@ -4,11 +4,13 @@ title: 하둡 Hadoop
 parent: 빅데이터
 ---
 
-업데이트: 2021.01.19
-
-
+------
 
 {: .no_toc }
+
+# 하둡 hadoop
+
+저비용, 대용량 데이터 처리 오픈 소스 플랫폼 '하둡 hadoop'이 소개한 Map Reduce, HDFS 기술은 빅데이터 분석을 적당한 가격에 할 수 있는 세상을 열었다. 오픈 소스라 관련 프로그램이 다양하게 나타나며 빅데이터 기술의 폭 넓은 발전도 이뤄냈다. 
 
 <details open markdown="block">
   <summary>
@@ -21,15 +23,7 @@ parent: 빅데이터
 
 
 
-# 하둡 hadoop
-
-저비용, 대용량 데이터 처리 오픈 소스 플랫폼 '하둡 hadoop'이 소개한 Map Reduce, HDFS 기술은 빅데이터 분석을 적당한 가격에 할 수 있는 세상을 열었다. 오픈 소스라 관련 프로그램이 다양하게 나타나며 빅데이터 기술의 폭 넓은 발전도 이뤄냈다. 
-
-
-
-
-
-# 하둡 hadoop 설치
+# 1. 하둡 hadoop 설치
 
 저비용, 대용량 데이터 처리 오픈 소스 플랫폼
 
@@ -85,11 +79,11 @@ Hive(HiveQL) 하둡 처리 좀 더 수월하게
 
 
 
-# 1. 윈도우
+# 2. 윈도우
 
 이 글에선 Windows 10 Home Edition 버전으로 진행한다.
 
-## 1.1 Virtual Box 설치
+## 2.1 Virtual Box 설치
 
 Virtual Box https://www.virtualbox.org/   ⇒ Download ⇒ Vitural Box Old builds ⇒
 
@@ -97,7 +91,7 @@ Virtual Box https://www.virtualbox.org/   ⇒ Download ⇒ Vitural Box Old build
 
 
 
-## 1.2 Vagrant, CentOS 7 설치
+## 2.2 Vagrant, CentOS 7 설치
 
 3대의 OS를 하나씩 설치하지 않고, 동시에 진행할 수 있다. 
 
@@ -172,9 +166,9 @@ vagrant up
 
 
 
-# 2. 리눅스
+# 3. 리눅스
 
-## 2.1 protobuf 설치
+## 3.1 protobuf 설치
 
 구글에서 공개한 오픈소스 직렬화 라이브러리.
 
@@ -197,7 +191,7 @@ mv protobuf-2.5.0  /opt/
 
 
 
-## 2.2 JDK 8 설치
+## 3.2 JDK 8 설치
 
 h. ln -s /opt/jdk/1.8.0_131 /opt/jdk/current 심볼릭 링크
 
@@ -205,7 +199,7 @@ h. ln -s /opt/jdk/1.8.0_131 /opt/jdk/current 심볼릭 링크
 
 
 
-## 2.3 하둡 설치(nn01 / dn01 / dn02)
+## 3.3 하둡 설치(nn01 / dn01 / dn02)
 
 편의상 MobaXterm의 MultiExec(여러개의 가상장치 동시 조작) 기능 사용을 추천한다.
 
@@ -307,7 +301,7 @@ $ ssh nn01
 
 
 
-## 2.4 하둡 설정
+## 3.4 하둡 설정
 
 모든 가상장치에 동일하게 설정한다. 
 
