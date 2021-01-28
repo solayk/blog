@@ -2,11 +2,12 @@
 layout: default
 title: 하둡 에코시스템
 parent: 빅데이터
+nav_order: 3
+last_modified_date: 2021-01-28
 ---
-
-
-
+# 하둡 에코시스템 Hadoop Ecosystem
 {: .no_toc }
+빅데이터는 처리 단계에 따라 수집, 정제, 적재, 분석, 시각화 등의 단계로 나뉜다. 하둡이 오픈소스인 덕분에 각 단계별 기술이 발달할 수 있었고, 이 기술들을 하둡 에코시스템이라 통칭한다.
 
 <details open markdown="block">
   <summary>
@@ -16,13 +17,6 @@ parent: 빅데이터
 1. TOC
 {:toc}
 </details>
-
-
-
-# 하둡 에코시스템 Hadoop Ecosystem
-
-빅데이터는 처리 단계에 따라 수집, 정제, 적재, 분석, 시각화 등의 단계로 나뉜다. 하둡이 오픈소스인 덕분에 각 단계별 기술이 발달할 수 있었고, 이 기술들을 하둡 에코시스템이라 통칭한다.
-
 
 
 ## 1. 하이브 HIVE

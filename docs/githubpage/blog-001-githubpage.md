@@ -1,14 +1,13 @@
 ---
 layout: default
 title: 깃허브페이지
-nav_order: 3
+nav_order: 6
 has_children: false
 permalink: docs/githubpage
 ---
-
-
-
+# 깃허브페이지로 Static Web 블로그 만들기
 {: .no_toc }
+깃허브 GitHub.io, 깃허브 페이지 GitHub Pages를 통해 Git Repository 내용을 변환기(Generator)를 이용해 저장된 데이터만 사이트로 보여주는 정적인 웹(Static Web)이다. 별도의 호스팅이 필요 없고, CSS로 디자인을 자유롭게 할 수 있다.
 
 <details open markdown="block">
   <summary>
@@ -20,18 +19,10 @@ permalink: docs/githubpage
 </details>
 
 
-
-
-
-# VSCode, Typora, Jekyll, GitHub Pages를 이용한 Static Web 블로그 구축
-
-VSCode
-
-Typora
-
+VSCode, Typora, Jekyll, GitHub Pages를 이용한 Static Web 블로그 구축
 [Typora]: https://typora.io/
 
-GitHub.io, GitHub Pages를 통해 Git Repository 내용을 변환기(Generator)를 이용해 저장된 데이터만 사이트로 보여주는 정적인 웹(Static Web)이다. 별도의 호스팅이 필요 없고, CSS로 디자인을 자유롭게 할 수 있다.
+
 
 내가 쓴 글을 로컬에서 관리할 수 있다. 블로그는 호스팅 업체가 사라지면 별도 백업을 하지 않으면 사라질 수 있지만, GitHub Pages는 Local, Remote Git을 이용해 백업이 쉽다. 
 

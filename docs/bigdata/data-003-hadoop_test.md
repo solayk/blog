@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 하둡 Hadoop 테스트 (Java)
+title: 하둡 맵리듀스
 parent: 빅데이터
+nav_order: 2
+last_modified_date: 2021-01-28
 ---
-
-
-
+# 하둡 맵리듀스 Hadoop Map Reduce
 {: .no_toc }
 
 <details open markdown="block">
@@ -16,10 +16,6 @@ parent: 빅데이터
 1. TOC
 {:toc}
 </details>
-
-
-
-# 하둡 Hadoop 테스트 (Java)
 
 작업환경
 

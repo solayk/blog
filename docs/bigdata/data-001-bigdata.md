@@ -1,17 +1,13 @@
 ---
 layout: default
 title: 빅데이터
-nav_order: 2
+nav_order: 5
 has_children: true
 permalink: docs/bigdata
+last_modified_date: 2021-01-28
 ---
 
 # 빅데이터
-
-업데이트: 2021.01.19
-
-
-
 {: .no_toc }
 
 <details open markdown="block">
@@ -25,7 +21,7 @@ permalink: docs/bigdata
 
 
 
-방대한 데이터를 관리하고 분석해 유용한 정보로 만드는 기술
+빅데이터란 방대한 데이터를 관리하고 분석해 유용한 정보로 만드는 기술이다.
 
 ![Word Cloud](https://user-images.githubusercontent.com/73984112/104974765-48273a00-5a3c-11eb-9467-5309c138c4c3.png)
 

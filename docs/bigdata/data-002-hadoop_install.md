@@ -1,16 +1,13 @@
 ---
 layout: default
-title: 하둡 Hadoop
+title: 하둡
 parent: 빅데이터
+nav_order: 1
+last_modified_date: 2021-01-28
 ---
-
-------
-
-{: .no_toc }
-
 # 하둡 hadoop
-
-저비용, 대용량 데이터 처리 오픈 소스 플랫폼 '하둡 hadoop'이 소개한 Map Reduce, HDFS 기술은 빅데이터 분석을 적당한 가격에 할 수 있는 세상을 열었다. 오픈 소스라 관련 프로그램이 다양하게 나타나며 빅데이터 기술의 폭 넓은 발전도 이뤄냈다. 
+{: .no_toc }
+저비용, 대용량 데이터 처리 오픈 소스 플랫폼인 '하둡'은 Map Reduce, HDFS 기술로 적당한 가격으로 빅데이터를 분석할 수 있는 시대를 열었다. 오픈 소스이기 때문에 관련 프로그램이 다양하게 나타날 수 있었고, 빅데이터 기술의 폭 넓은 발전을 이뤄냈다. 
 
 <details open markdown="block">
   <summary>
