@@ -26,7 +26,7 @@ last_modified_date: 2021-02-06
 
 자바 설치는 다루지 않는다. 다른 블로그를 참고해 Open JDK 1.8 설치 후 환경변수 설정까지 반드시 한다.
 
-1) [링크](https://spring.io/tools )에서 OS에 맞게 Spring Tools 4 for Eclipse TS4를 다운로드 한다.
+1) [https://spring.io/tools](https://spring.io/tools )에서 OS에 맞게 Spring Tools 4 for Eclipse TS4를 다운로드 한다.
 
 2) 설치를 원하는 폴더에 옮긴 후 Jar 파일의 압축을 푼다. 반디집 등 프로그램으로 풀 수 있다.
 
@@ -61,7 +61,7 @@ last_modified_date: 2021-02-06
 
 9) 이 글에선 Spring Boot Version을 2.4.2로 진행한다.
 
-버전별 차이는 [링크](https://github.com/spring-projects/spring-boot/wiki)에서 볼 수 있다. 2.4.x 버전으로 진행 시 특이사항은 
+버전별 차이는 [https://github.com/spring-projects/spring-boot/wiki](https://github.com/spring-projects/spring-boot/wiki)에서 볼 수 있다. 2.4.x 버전으로 진행 시 특이사항은 
 
 ![10](https://user-images.githubusercontent.com/73984112/107108224-a8f6a500-6879-11eb-977b-a81d2e3767b9.PNG)
 
@@ -91,7 +91,7 @@ last_modified_date: 2021-02-06
 
 아래 설명은 Windows 10 Pro, VS Code (Visual Studio Code) 기준으로 작성했다.
 
-1) Node.js 설치: [링크](https://nodejs.org/ko/)에서 최신 버전을 받아 설치한다.
+1) Node.js 설치: [https://nodejs.org/ko/](https://nodejs.org/ko/)에서 최신 버전을 받아 설치한다.
 
 2) React 프로젝트를 저장할 폴더를 만들고, VS Code 실행 후 아래 사진과 같이 폴더 경로를 열어준다.
 
