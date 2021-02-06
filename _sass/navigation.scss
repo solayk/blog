@@ -213,7 +213,7 @@
 
   &:nth-last-child(2) {
     &::after {
-      content: "  _  ";
+      content: "/";
     }
   } // SOLAYK : 포스팅 경로 바로 뒤 last modified date 출력
 

@@ -3,14 +3,12 @@ layout: default
 title: 작업환경 만들기
 parent: WEB, Spring Boot X React
 nav_order: 1
-last_modified_date: 2021-01-28
+last_modified_date: 2021-02-06
 ---
 # 작업환경 만들기
 {: .no_toc }
 
-스프링부트 웹 셋업에 대한 설명을 한 페이지에 모두 담았습니다. 
 
-Ctrl + F 로 원하는 것을 찾아보세요. 아래 목차는 왼편 삼각형을 누르면 숨겨집니다.
 
 <details open markdown="block">
   <summary>
@@ -142,11 +140,13 @@ create-react-app .
 
 ![3](https://user-images.githubusercontent.com/73984112/107110553-127faf00-688c-11eb-81f7-d1a2844b1a83.PNG)
 
-리액트 웹 페이지를 실행해보자. 아래 화면이 나오면 성공이다.
+리액트 웹 페이지를 실행해보자.
 
 ```bash
 yarn start
 ```
+
+아래 화면이 나오면 성공이다.
 
 ![4](https://user-images.githubusercontent.com/73984112/107110593-6e4a3800-688c-11eb-8590-2cb07e575584.PNG)
 
