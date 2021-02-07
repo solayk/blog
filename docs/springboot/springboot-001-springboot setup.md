@@ -85,6 +85,8 @@ last_modified_date: 2021-02-06
 
 ![13](https://user-images.githubusercontent.com/73984112/107109819-a189c880-6886-11eb-8edd-f3ca7a7ac055.PNG)
 
+13) Java Compiler 버전이 1.8인지 확인한다. 추가로 pom.xml에도 1.8로 되어 있는지 확인한다. 이 작업은 구글에 검색하면 잘 나와 있어 자세한 설명은 생략한다.
+
 
 
 # React 설치

@@ -754,3 +754,48 @@ yarn start
 ![15](https://user-images.githubusercontent.com/73984112/107123139-31f3f780-68df-11eb-9df2-f059c1c2a4a9.PNG)
 
 ADD USER를 눌러 데이터도 추가해보고, Edit 과 Delete를 눌러 DB에 CRUD가 잘 작동하는지 확인한다.
+
+
+
+# 리눅스 Spring Boot 배포
+
+1) 리눅스 서버 환경에서 Spring Boot를 배포하려면, 먼저 Spring Boot 프로젝트를 Maven Build 한다.
+
+![1](https://user-images.githubusercontent.com/73984112/107133591-3515d480-692d-11eb-894e-66c0b0f03de1.PNG)
+
+2) Configuration 작성
+
+- Name: 원하는 이름 기입
+- Goals: "package" 기입
+- Profiles: 빈칸 (채워져 있다면 삭제)
+
+![2](https://user-images.githubusercontent.com/73984112/107133592-36470180-692d-11eb-98ba-a2965913179b.PNG)
+
+3) 생성된 War 파일을 리눅스로 복사해 옮긴다. 윈도우에서 리눅스로 옮긴다면 WinSCP를 사용해 War 파일이 깨지지 않도록 한다.
+
+4) 리눅스에서 War 파일이 있는 경로에 아래와 같이 입력한다.
+
+```bash
+$ java -jar War파일이름
+```
+
+5) 작동하는지 확인한다. 종료를 원하면 Ctrl + C 를 누른다.
+
+6 참고) 백그라운드 동작을 원하면 아래와 같이 입력한다. Process 번호가 뜨면 성공이다. 
+
+```bash
+$ nuhup java -jar War파일이름 &
+```
+
+백그라운드 동작 상태 확인은 아래 명령어로 한다.
+
+```bash
+$ ps -ef | grep War파일이름(일부)
+```
+
+백그라운드 종료를 원하면 Process 번호로 kill 한다.
+
+```bash
+$ kill -9 Process번호
+```
+
