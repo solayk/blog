@@ -1,8 +1,8 @@
 ---
 layout: default
 title: 파이썬 웹 크롤러
-parent: 파이썬
-nav_order: 2
+parent: Python
+nav_order: 3
 last_modified_date: 2021-01-28
 ---
 # 파이썬 Python 웹 크롤러

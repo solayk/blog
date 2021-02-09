@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 파이썬
+title: Python
 nav_order: 2
 has_children: true
 permalink: docs/python
 last_modified_date: 2021-01-28
 ---
 
-# 파이썬
+# 파이썬 Python
 {: .no_toc }
 
 <details open markdown="block">

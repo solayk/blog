@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 파이썬 기초
-parent: 파이썬
+parent: Python
 nav_order: 1
 last_modified_date: 2021-01-28
 ---
@@ -30,17 +30,21 @@ last_modified_date: 2021-01-28
 
 머신러닝의 이론적 백그라운드는 선형대수와 통계로 이루어져 있으며, 사이킷런 같은 머신러닝 패키지가 넘파이 기반으로 되어 있다. 머신러닝 알고리즘이나 사이파이와 같은 과학, 통계 지원용 패키지를 직접 만드는 개발이 아니라면 넘파이를 상세하기 알 필요는 없다지만, 넘파이를 이해하는 것이 파이썬 기반의 데이타분석과 머신러닝에 중요하다. 넘파이가 데이타 핸들링에 효율적으로 쉽고 편하고 할 수 없다.   그러나 데이타 핸들링에 주로 사용하는 판다스도 많은 부분이 넘파이를 기반으로 만들어져 있다.
 
-아래 모든 예제는 import numpy as np를 실행한 상태로 가정한다.
+
 
 ## numpy 자료형(데이터형)
 
-Numpy는 배열 안에 동일한 데이터 타입만 저장한다. 이렇게 하면 필요한 저장공간도 일정하고, 원하는 위치에 바로 접근해 데이터를 읽을 수 있어 계산을 쉽고, 빠르게 처리 가능하다. 
+Numpy는 배열 안에 동일한 데이터 타입만 저장한다. 저장할때 필요한 저장 공간을 일정하게 유지해 원하는 위치에 바로 접근해 데이터를 읽어 계산을 쉽고, 빠르게 처리한다.
+
+
 
 ### dtype, astype
-
+{: .no_toc }
 dtype으로 자료형 출력하고, astype으로 자료형 변경한다.
 
 ```python
+import numpy as np
+
 arr = [[1,2,3],[9,100,7]]
 print(arr.dtype)						# int32
 
@@ -60,7 +64,60 @@ print(arr)								# ['9' '2.2' 'python']
 
 ndarray에 다양한 자료형이 있을 경우 문자 > 실수 > 정수 순으로 전체 자료형을 결정한다.
 
-<U는 Unicode를 의미하며, 숫자는 11, 32는 비트를 의미한다.
+```python
+import numpy as np
+
+ar = np.array([1, 2, 3])                 
+print('자료형 type:', ar.dtype)  			# int32
+ar = np.array([1, 2.9, 3])                 
+print('자료형 type:', ar.dtype)  			# float64
+```
+
+문자가 있을 경우 Unicode로 변환한다.
+
+```python
+import numpy as np
+
+ar = np.array(['1', '2', '3','4'])   
+print('자료형 type:', ar.dtype)			# <U1
+
+ar = np.array(['가', '나', '다','라'])   
+print('자료형 type:', ar.dtype)			# <U1
+
+ar = np.array(['hello', 'hi', 'hola','bye'])   
+print('자료형 type:', ar.dtype)			# <U5 (제일 긴 문자 기준)
+
+ar = np.array(['iloveyou', 'hi', 'hola','bye'])   
+print('자료형 type:', ar.dtype)			# <U8
+
+ar = np.array(['abcdefghijklmnopqrstuvwxyz', 'hi', 'hola','bye'])   
+print('자료형 type:', ar.dtype)			# <U26
+
+ar = np.array([1, 2, 3,'4'])   
+print('자료형 type:', ar.dtype)			# <U11
+
+ar = np.array([11111111111, 2, 3,'4'])   
+print('자료형 type:', ar.dtype)			# <U21
+
+ar = np.array([1, 2.9, 3,'4'])   
+print('자료형 type:', ar.dtype)			# <U32 (실수가 있을 경우 32비트)
+
+ar = np.array([1, 222222222222222222222222222222222.999999999999999999999999, 3,'4'])   
+print('자료형 type:', ar.dtype)			# <U32 (출력할때 2.2222222222222223e+43 이런식으로 표현)
+```
+
+### 참고) 리틀 인디언, 빅 인디언
+{: .no_toc }
+
+리틀 vs 빅 엔디언 컴퓨터는 데이터를 메모리나 디스크에 저장할 때 바이트 단위로 나누어 저장한다. 저장하는 데이터는 대게 4바이트나 8바이트로 구성되므로,연속되는 바이트를 어떤 순서로 저장해하는데 이를 바이트 저장 순서(byte order)라고 한다. 두가지가 있다.
+
+- 빅 엔디언(big endian) : 높은 바이트부터 낮은 바이트로 저장. 예를 들어 0x12345678인 경우 0x12, 0x34, 0x56, 0x78 순서로 저장
+- 리틀 엔디안(little endian) : 낮은 바이트부터 낮은 바이트로 저장. 예를 들어 0x12345678인 경우 0x78, 0x56, , 0x34, 0x12 순서로 저장
+
+인텔 계열 CPU(인텔이나 AMD)는 리틀 엔디안을 사용한다. 다만 네트워크를 통해 데이터를 전송할 때는 빅엔디안을 사용한다.
+
+
+
 
 ## numpy. array() = ndarray
 

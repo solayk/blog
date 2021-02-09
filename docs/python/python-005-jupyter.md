@@ -1,14 +1,14 @@
 ---
 layout: default
 title: 주피터노트북
-parent: 파이썬
-nav_order: 4
+parent: Python
+nav_order: 5
 last_modified_date: 2021-01-28
 ---
 # 주피터노트북 Jupyter Notebook
 {: .no_toc }
 
-주피터 노트북은 코드 실행 뿐만 아니라 문서화가 쉽다.
+주피터 노트북은 파이썬 에디터로 코드 실행 뿐만 아니라 문서화가 쉽다.
 
 
 <details open markdown="block">
