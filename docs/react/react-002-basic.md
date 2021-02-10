@@ -141,9 +141,75 @@ Javascript를 확장한 문법으로 간단하게 말하면 HTML과 Javascript�
 
 
 
+## Lifecycle Hook
+
+Component의 Mount 여부에 따라 실행
+
+```react
+class Detail extends React.Component {
+    componentDidMount(){        
+    }
+    componentWillUnmount(){
+    }
+}
+```
+
+componentDidMount : Detail이란 Component가 Mount 할때 실행
+
+componentWillUnmount : Detail이란 Component가 Unmount 할때 실행
+
+
+
+## UseEffect(() => {}) Hook
+
+Lifecycle Hook과 동일한 역할. UseEffect 자체를 여러번 쓸 수 있다.
+
+```react
+useEffect(()=>{
+    setTimeout(()=>{alert('ok')},2000)		// Component Mount 할때 실행
+    return function test(){}					// Component Unmount 할때 return 실행
+});
+```
+
+단, 다시 Rendering 할때마다 useEffect가 실행되므로 useEffect에 조건을 지정해 한번만 실행하도록 조건 지정 처리가 필요한 상황이 있을 수 있다. useEffect(()=> {},[조건]);
+
+### 예시: useEffect로 Component의 Mount 2초 후 div 숨김
+{: .no_toc }
+
+만일 useEffect에 [alert] 조건이 빠지면 inputData 값을 입력할때마다 useEffect가 실행된다.
+
+```react
+function Detail(props) {
+	
+    let [alert, alertChange] = useState(true);
+    let [inputData,inputDataChange] = useState('');
+    
+    useEffect(() => {
+        let timer = setTimeout(() => { alertChange(false) }, 2000)
+        return () => {clearTimeout(timer)}
+    },[alert]);
+
+    return (
+	        { inputData }
+            <input onChange={(e)=>{inputDataChange(e.target.value)}}></input>
+            {
+                alert
+                ? (<div className="my-alert">
+                       <p>재고가 얼마 남지 않았습니다</p>
+                   </div>)
+                : null
+            }
+	)
+}
+```
+
+추가로 setTimeout은 실행할 코드가 복잡하면 문제가 발생할 수 있어 useEffect의 Unmount 시 clearTimeout 으로 제거하면 좋다.
+
+
+
 # React Error 에러 모음
 
 ### npm start 시 "react-scripts 은(는) 내부 또는 외부 명령 실행할 수 있는 프로그램 또는 배치 파일이 아닙니다"
-
+{: .no_toc }
 커맨드에 npm update 또는 yarn update 입력해 해결한다.
 
