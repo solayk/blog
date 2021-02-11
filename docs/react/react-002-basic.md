@@ -30,15 +30,15 @@ React는 페이스북이 만든 프론트엔드 라이브러리입니다. React�
 
 이 글에선 리액트에 대한 탄생 배경에 대해 깊게 다루진 않겠습니다. 자세한 설명이 궁금하신 분은 아래 글을 참고하시기 바랍니다.
 
-[https://velopert.com/3612](https://velopert.com/3612)
+[VELOPERT 리액트는 무엇인가](https://velopert.com/3612)
 
-[https://velopert.com/3236](https://velopert.com/3236)
+[VELOPERT Virtual DOM](https://velopert.com/3236)
 
-[https://velog.io/@youthfulhps/React-React를-사용하는-이유](https://velog.io/@youthfulhps/React-React를-사용하는-이유)
+[Youthfulhps React를 사용하는 이유](https://velog.io/@youthfulhps/React-React를-사용하는-이유)
 
-[https://ryublock.tistory.com/41](https://ryublock.tistory.com/41)
+[DOM과 Virtual DOM](https://ryublock.tistory.com/41)
 
-[https://www.youtube.com/watch?v=muc2ZF0QIO4&feature=youtu.be](https://www.youtube.com/watch?v=muc2ZF0QIO4&feature=youtu.be)
+[영상 React and the Virtual DOM](https://www.youtube.com/watch?v=muc2ZF0QIO4&feature=youtu.be)
 
 
 
@@ -141,6 +141,24 @@ Javascript를 확장한 문법으로 간단하게 말하면 HTML과 Javascript�
 
 
 
+## import
+
+React는 외부라이브러리로 Component를 제공하는 경우가 많다. 외부 라이브러리의 Component 또는 별도 파일로 만든 Component를 쓰려면 import 해야만 한다.
+
+1) 기본적으로 React를 쓰려면 아래 코드가 반드시 있어야 한다.
+
+```react
+import React from 'react';
+```
+
+2) 외부 라이브러리를 import 하되 수정해서 쓰려면 import 시 { } 안에 import 대상을 쓴다.
+
+```react
+import { Table } from 'react-bootstrap';
+```
+
+
+
 ## Lifecycle Hook
 
 Component의 Mount 여부에 따라 실행
@@ -203,7 +221,285 @@ function Detail(props) {
 }
 ```
 
-추가로 setTimeout은 실행할 코드가 복잡하면 문제가 발생할 수 있어 useEffect의 Unmount 시 clearTimeout 으로 제거하면 좋다.
+추가로 setTimeout은 실행할 코드가 복잡하면 문제가 발생할 수 있어 useEffect의 Unmount 시 clearTimeout 으로 제거한다.
+
+
+
+# Props
+
+HTML을 Component로 나누다보면 다른 Component의 State에 접근할 방법이 필요하다. 이때 사용하는 것이 Props 이다.
+
+```react
+function App(){
+	let [shoes, shoesChange] = useState(Data);
+    
+    return(
+    	<div>
+        	<Products shoes={shoes}></Products>
+        </div>
+    )
+}
+
+function Products(props) {
+  return (
+    props.shoes.map(function (i, idx) {
+      return (
+        <div className="col-md-4" key={idx}>
+          <img src={'URL' + (idx + 1) + '.jpg'} width="100%" />
+          <h4>{i.title}</h4>
+          <p>{i.content}</p>
+          <p>{i.price}원</p>
+        </div>
+      )
+    })
+  )
+}
+```
+
+
+
+## Context API
+
+페이지가 복잡해지면 Props로 넘기는 것이 복잡해진다. 이런 경우 Context API를 쓴다.
+
+1) useContext 를 import 한다.
+
+2) Component 메인 함수 전에 Context 생성한다.
+
+3) Context를 사용하고 싶은 HTML 영역을 Context 태그로 감싼다. 아래 예제에선 <stockContext.Provider></stockContext.Provider> 이다.
+
+4) 태그 안에 넘길 값을 정의한다. 아래 예제에선 <stockContext.Provider value={stock}>에서 value에 해당하는 부분이다.
+
+```react
+import React, { useContext, useState } from 'react';
+
+let stockContext = React.createContext();
+
+function App() {
+
+  let [stock, stockChange] = useState([10,11,12])
+
+  return (
+	<div>
+		<stockContext.Provider value={stock}>
+        <div className="row">
+        	<Products shoes={shoes}></Products>
+        </div>
+        </stockContext.Provider>    
+    </div>
+  )
+ 
+  function Products(props) {
+
+  let stock = useContext(stockContext);
+
+  return (
+    props.shoes.map(function (i, idx) {
+      return (
+        <div className="col-md-4" key={idx}>
+          <p>재고: {stock[idx]}</p>
+        </div>
+      )
+    })
+  )
+}
+```
+
+만일 Context를 다른 Component로 넘기길 원한다면
+
+1) Context 변수 앞에 export를 붙이고
+
+```react
+export let stockContext = React.createContext();
+```
+
+2) 넘길 Component를 Context 태그로 감싼다.
+
+```react
+<stockContext.Provider value={stock}>    
+	<Route path="/detail/:id">
+		<Detail shoes={shoes} stock={stock} stockChange={stockChange}></Detail>
+	</Route>
+</stockContext.Provider>
+```
+
+3) 받아올 Component에 import 한다.
+
+```react
+import {stockContext} from './App';
+```
+
+3) 위 예제와 마찬가지로 Context를 쓰길 원하는 HTML 영역을 Context 태그로 감싼다.
+
+
+
+# AJAX
+
+서버에 요청하는 방식은 크게 세가지가 있다.
+
+- GET 요청: 서버에 URL 표기로 정보를 전달해 요청
+- POST 요청: 서버에 URL에 표기하지 않고 정보를 전달해 요청
+- AJAX: 비동기(Asynchronous) 방식으로 브라우저 새로고침 없이 서버에 정보를 전달해 요청
+
+Javascript에서 Ajax를 쓰려면
+
+- JQuery 설치 ⇒ $.ajax()
+- Axios 설치 ⇒ axios.get()
+- Javascript ⇒ fetch()
+
+React에서 axios를 쓰기 위해 먼저 터미널에서 아래 명령어로 axios를 설치한다.
+
+```bash
+yarn add axios
+```
+
+### axios.get() ⇒ 버튼 클릭(onClick)으로 데이터 받기
+{: .no_toc }
+
+axios.get('url').then().catch()
+
+```react
+import axios from 'axios';
+
+function App() {
+    
+    let [shoes, shoesChange] = useState(Data);
+    
+    return(
+        <div>
+        	<button className="btn btn-primary" onClick={()=>{
+              axios.get('URL')
+              .then((result)=>{console.log(result.data)})
+              .catch(()=>{})
+            }}>더보기</button>
+        </div>
+    )
+}
+```
+
+then: 성공 시 실행할 코드 작성 (Callback 콜백 함수 () => {}로 작성), console 창에 정보가 뜨면 정상이다.
+
+catch: 실패 시 실행할 코드 작성
+
+useState로 변수를 선언했다면 "더보기" 버튼을 눌렀을때 상품 목록을 가져오기는 아래와 같이 변경함수를 쓸 수 있다. State는 직접 변경이 안되므로 깊은 복사(...)를 쓴다.
+
+```react
+axios.get('URL')
+              .then((result)=>{
+                shoesChange([...shoes,...result.data])
+              })
+              .catch(()=>{})
+```
+
+### 로딩 표시
+{: .no_toc }
+
+"더보기" 버튼 누르면 데이터를 받아오기 전까지 진행 표시를 할 수도 있다.
+
+```react
+let [load, loadChange] = useState(false);
+
+{
+	load
+	? (
+		<div className="my-alert">
+			<p>로딩중입니다</p>
+		</div>)
+	: null
+}
+
+<button className="btn btn-primary" onClick={()=>{
+	loadChange(true);
+	axios.get('URL')
+	.then((result)=>{
+	shoesChange([...shoes,...result.data]);
+	loadChange(false);
+	})
+	.catch(()=>{loadChange(false);})
+}}>더보기</button>
+
+             
+```
+
+
+
+### axios.post() 서버에 데이터 보내기
+{: .no_toc }
+
+```react
+axios.post('url',{id:'admin',pw:'1111'}).then().catch();
+```
+
+
+
+# Redux
+
+1) Props 없이 Component가 State 공유
+
+2) 
+
+## Redux 설치
+
+```react
+yarn add redux react-redux
+```
+
+
+
+
+
+# 기타
+
+## 리액트 애니메이션 효과 React CSS Animation
+
+1) 커맨드에서 react-transition-group 설치한다.
+
+```bash
+yarn add react-transition-group
+```
+
+2) 코드에 라이브러리를 import 한다. 추가로 CSS를 작성할 파일도 import 한다.
+
+```react
+import { CSSTransition } from 'react-transition-group'
+import './Detail.scss';
+```
+
+3) 애니메이션을 추가할 Component를 CSSTransition 태그로 감싼다.
+
+```react
+<CSSTransition in={tabSwitch} classNames="ani" timeout={500}>
+	<TabContent tab={tab} tabSwitchChange={tabSwitchChange}/>
+</CSSTransition>
+```
+
+	- in : 효과 ON, OFF 스위치 역할
+	- classNames : CSS 파일에 효과 부여를 위한 클래스 이름 지정
+	- timout : CSS 효과 작동하기까지의 시간
+
+4) 효과를 ON, OFF 할 수 있는 스위치 State를 만든다.
+
+```react
+let [tabSwitch, tabSwitchChange] = useState(false);
+```
+
+5) CSS 파일에 애니메이션 시작과 동작 시 적용할 CSS를 기입한다. 아래 예제는 투명도와 Transition 시간으로 천천히 나타나는 효과를 만든 것이다.
+
+```css
+.ani-enter {    // 애니메이션 시작할때 적용할 CSS
+    opacity: 0;
+}
+
+.ani-active {   // 애니메이션 동작할때 적용할 CSS
+    opacity: 1;
+    transition: all 500ms;
+}
+```
+
+이외에도 react-transition-group에서 제공하는 애니메이션 효과와 예제는 아래 링크에서 확인한다.
+
+[https://reactcommunity.org/react-transition-group/](https://reactcommunity.org/react-transition-group/)
+
 
 
 
