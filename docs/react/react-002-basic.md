@@ -8,7 +8,7 @@ last_modified_date: 2021-02-07
 # React 리액트 기초
 {: .no_toc }
 
-
+React는 페이스북이 만든 프론트엔드 라이브러리입니다. React에 대한 기본적인 설명과 작성 방법을 한페이지에 정리했습니다. 원하는 내용을 Ctrl + F 로 검색해보세요. 편의상 경어체로 작성하지 않았으니 양해 부탁 드립니다.
 
 <details open markdown="block">
   <summary>
@@ -22,7 +22,7 @@ last_modified_date: 2021-02-07
 
 # React는 무엇일까
 
-React는 페이스북이 만든 프론트엔드 라이브러리입니다. React가 무엇인지 인터넷을 찾아보면 "성능" 측면에서 Virtual DOM을 통한 업데이트로 연산을 최소화하고, "코딩" 측면에선 Component로 분리해 작성과 관리가 쉽게 만들었다는 얘기를 볼 수 있습니다. MVC Framework가 아닌 User Interface(View)만 만듭니다.
+React가 무엇인지 인터넷을 찾아보면 "성능" 측면에서 Virtual DOM을 통한 업데이트로 연산을 최소화하고, "코딩" 측면에선 Component로 분리해 작성과 관리가 쉽게 만들었다는 얘기를 볼 수 있습니다. MVC Framework가 아닌 User Interface(View)만 만듭니다.
 
 사실 무엇인지, 왜 쓰는지 잘 와닿지 않습니다. 기존 [DOM](https://developer.mozilla.org/ko/docs/Web/API/Document_Object_Model)과 어떤 차이가 있는지 가장 명확하게 표현한 그림을 보겠습니다. 출처는 [서비큐라 기술블로그](https://subicura.com/2016/06/20/server-side-rendering-with-react.html) 입니다. 기존 DOM은 메모리에 HTML을 띄우고 JavaScript를 읽어 내려가며 붙여가는 방식이라면, React의 Server Side Rendering은 이 과정을 서버에서 수행하고, Client Side에서 이벤트 속성만 추가한 후 사용자에게 보여주어 속도가 빠릅니다. 이 단계가 성능에 미치는 차이는 데이터가 많을 때, 사용자 인터렉션이 많을 때 더 크게 나타납니다.
 
@@ -313,14 +313,15 @@ function App() {
 export let stockContext = React.createContext();
 ```
 
-2) 넘길 Component를 Context 태그로 감싼다.
+2) 넘길 Component를 Context 태그로 감싼다. (*주의 Route 태그를 감쌀 경우 다른 path가 작동하지 않는다)
 
 ```react
-<stockContext.Provider value={stock}>    
-	<Route path="/detail/:id">
+
+<Route path="/detail/:id">
+	<stockContext.Provider value={stock}>            
 		<Detail shoes={shoes} stock={stock} stockChange={stockChange}></Detail>
-	</Route>
-</stockContext.Provider>
+	</stockContext.Provider>
+</Route>
 ```
 
 3) 받아올 Component에 import 한다.
@@ -434,9 +435,9 @@ axios.post('url',{id:'admin',pw:'1111'}).then().catch();
 
 # Redux
 
-1) Props 없이 Component가 State 공유
+- Props를 쓰지 않고 Component에 State 공유 (ContextAPI와 유사한 역할)
 
-2) 
+- State 데이터 관리 편리
 
 ## Redux 설치
 
@@ -444,11 +445,210 @@ axios.post('url',{id:'admin',pw:'1111'}).then().catch();
 yarn add redux react-redux
 ```
 
+1) react-redux에서 Provider를 import 한다.
 
+```react
+import { Provider } from 'react-redux';
+```
+
+2) State를 공유하고 싶은 상위 Component를 Provider 태그로 감싼다.
+
+```react
+<Provider>
+	<App />
+</Provider>
+```
+
+전체 적용을 원하면 index.js에서 App 태그를 감싼다.
+
+3) State를 Provider를 import 한 파일에 정의한다.
+
+```react
+let store = createStore(()=>{ 
+  return [
+    { id : 0, name : 'nike', qty : 2 },
+    { id : 1, name : 'adidas', qty : 2 }
+  ] 
+});
+```
+
+3) State를 부르고 싶은 Component에 
+
+​	(1) import { connect } 추가
+
+​	(2) export connect 추가
+
+​	(3) function 추가
+
+​	(4) Component 함수 내부 파라미터로 props 설정
+
+```react
+import React from 'react';
+import { Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+function Cart(props) {
+    return (
+        <div>
+            <Table responsive>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>상품명</th>
+                        <th>수량</th>
+                        <th>변경</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        props.state.map((a, i) => {
+                            return (
+                                <tr>
+                                    <td>{props.state[i].id}</td>
+                                    <td>{props.state[i].name}</td>
+                                    <td>{props.state[i].qty}</td>
+                                    <td>변경</td>
+                                </tr>
+                            )
+                        })
+                    }
+
+                </tbody>
+            </Table>
+        </div>
+    );
+}
+
+function test(state) {
+    return {
+        state: state
+    }
+}
+
+export default connect(test)(Cart)
+```
+
+
+
+## Redux State 변경
+
+Redux로 정의한 State의 값을 변경하려면 reduce 함수를 정의하고, dispatch로 연동한다. 이런 방식으로 State 정의와 State 변경 함수를 모아서 관리할 수 있다.
+
+1) State를 정의한 파일에 reducer 함수 정의
+
+```react
+let defaultValue = [
+  { id : 0, name : 'nike', qty : 2 },
+  { id : 1, name : 'adidas', qty : 2 }
+];
+
+function reducer(state = defaultValue, condition) {
+  if (condition.type === 'addQty'){
+    let tmp = [...defaultValue];
+    tmp[0].qty++;
+    return tmp;
+  }
+  else if (condition.type === 'removeQty'){
+    let tmp = [...defaultValue];
+    if (tmp[0].qty == 1) alert('수량은 최소 1이어야 합니다');
+    else tmp[0].qty--;
+    return tmp;
+  }
+  else {
+    return state;
+  }
+}
+
+let store = createStore(reducer);
+```
+
+2) State 값 변경 액션 위치에 props.dispatch로 연결한다.
+
+```react
+<td>
+	<button onClick={()=>{ props.dispatch({ type : 'addQty' })}}>+</button>
+	<button onClick={()=>{ props.dispatch({ type : 'removeQty' })}}>-</button>
+</td>
+```
+
+
+
+# Local Storage
+
+State 데이터 저장은 (1) 서버 DB (2) 브라우저 임시 저장공간에 할 수 있다. 대부분의 데이터는 DB에 저장하지만 캐시, history 등 임시 저장 목적으로 브라우저 임시 저장공간을 쓸 수 있다. 브라우저 임시 저장공간은 Session Storage와 Local Storage가 있다. Session Storage는 브라우저를 끄거나 일정 시간이 지나면 사라지고, Local Storage는 임시 저장공간을 청소하지 않는 이상 반 영구적으로 저장할 수 있다. 단, 크롬 기준 5MB 이하 텍스트 저장만 가능하다.
+
+아래는 브라우저 임시 저장공간을 쓰는 예이다.
+
+- 글 작성 중간 실수로 데이터를 잃어버리지 않기 위한 임시 저장
+- 장바구니, 좋아하는 콘텐츠 등 수시로 변경하는 데이터
+- 방문자가 봤던 상품 팝업에 띄우기 위해 저장
+- 서버에 반드시 저장할 필요가 없는 데이터
+
+함수형 Component로 만든 페이지 접속 시 Local Storage에 페이지 url 기록을 원하면 아래와 같이 useEffect() 안에 localStorage getItem, setItem으로 불러오고 저장할 수 있다.
+
+```react
+useEffect(()=>{
+	var arr = localStorage.getItem('watched');
+	if(arr == null){ arr = []; } else { arr = JSON.parse(arr); }
+    arr.push(id);
+    arr = new Set(arr);
+    arr = [...arr];
+    localStorage.setItem('watched',JSON.stringify(arr));
+},[]);
+```
+
+
+
+# React 성능 개선
+
+React의 성능은 크롬 확장 프로그램인 [React-developer-tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=ko)를 통해 랜더링 시간을 체크하는 방식으로 확인할 수 있다.
+
+## 1. Lazy Loading : Component가 필요한 시점에 import
+
+파일 상단에 lazy, Suspense를 import 하고, import 했던 Component를 아래와 같이 바꾼다.
+
+```react
+import React, { useContext, useState, lazy, Suspense } from 'react';
+
+// import Detail from "./Detail.js";						// 기존 방식
+let Detail = lazy(()=>{ return import('./Detail.js') });
+```
+
+Component 태그를 아래와 같이 Suspense 태그로 감싼다.
+
+```react
+<Route path="/detail/:id">
+	<stockContext.Provider value={stock}>
+		<Suspense fallback={<div>로딩중이에요</div>}>
+			<Detail shoes={shoes} stock={stock} stockChange={stockChange}></Detail>
+		</Suspense>
+	</stockContext.Provider>
+</Route>
+```
+
+## 2. memo( ) : 불필요한 재랜더링 방지
+
+Component 크기가 클때 쓸 수 있다.
+
+
+
+## 3. 기타 React 성능 개선 방법
+
+1) 콜백함수나 스타일 Object는 컴포넌트 밖 별도 변수로 쓴다. 재 랜더링 시 메모리 할당 작업을 줄일 수 있다.
+
+2) CSS 애니메이션 효과를 줄때 margin, width, padding 등 레이아웃 속성에 애니메이션 효과를 주면 느려진다. 가급적 transform, opacity 같은 속성을 주는 것이 좋다.
 
 
 
 # 기타
+
+## PWA, Progressive Web App
+
+아이폰 앱스토어, 안드로이드 구글플레이에 등록하지 않고 배포할 수 있게 만드는 리액트 기반 웹앱이다.
+
+( 추후 업데이트 예정 )
+
+
 
 ## 리액트 애니메이션 효과 React CSS Animation
 
@@ -499,6 +699,14 @@ let [tabSwitch, tabSwitchChange] = useState(false);
 이외에도 react-transition-group에서 제공하는 애니메이션 효과와 예제는 아래 링크에서 확인한다.
 
 [https://reactcommunity.org/react-transition-group/](https://reactcommunity.org/react-transition-group/)
+
+
+
+## Node.js 서버에 React 웹 올리기
+
+React는 새로고침 없는 부드러운 페이지 전환이 가능하고, 서버의 역할이 줄어든다.
+
+
 
 
 
