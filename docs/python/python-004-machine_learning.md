@@ -23,13 +23,13 @@ last_modified_date: 2021-02-08
 
 # 절차
 
-(1) 데이타 읽어오기
+(1) 데이타 읽기
 
 (2) 데이터와 레이블 분리 변수 선언
 
-(3) 훈련데이터와 테스트 데이터로 분리하기
+(3) 훈련데이터와 테스트 데이터로 분리하기 train_test_split()
 
-(4) 모델로 학습하기
+(4) 알고리즘, 모델 학습 fit()
 
 (5) 예측하기
 
@@ -198,6 +198,24 @@ print(boston.DESCR)
 
 
 # sklearn 기본 라이브러리
+
+
+
+
+
+
+
+## 의사결정나무 Desicion Tree
+
+
+
+
+
+## 랜덤포레스트 Random Forest
+
+결정트리(Decision Tree)의 앙상블(ensemble)
+
+
 
 
 

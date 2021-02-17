@@ -1,7 +1,7 @@
 ---
 layout: default
 title: WEB, Spring Boot X React
-nav_order: 2
+nav_order: 1
 has_children: true
 permalink: docs/springboot
 last_modified_date: 2021-02-05
