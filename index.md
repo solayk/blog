@@ -22,3 +22,7 @@ permalink: /
 
 모두에게 유용한 블로그가 되길 바라며.. 좋은 하루 보내세요 😄
 {: .fs-5 .fw-300 }
+
+[🖱️Solayk 깃허브 바로가기](https://github.com/solayk)
+{: .fs-5 .fw-300 }
+
