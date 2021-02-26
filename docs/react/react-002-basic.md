@@ -573,6 +573,16 @@ let store = createStore(reducer);
 
 
 
+## Middleware Redux
+
+위에서 설명한 Redux는 간단한 Store 형태로 Store에 Reducer로 접근해 값을 변경하는 방식이나 Object 데이터만 받을 수 있다. 만일 Object 뿐만 아니라 함수와 Promise도 받게 하려면 Middleware로 Store를 설정한다.
+
+
+
+
+
+
+
 # Local Storage
 
 State 데이터 저장은 (1) 서버 DB (2) 브라우저 임시 저장공간에 할 수 있다. 대부분의 데이터는 DB에 저장하지만 캐시, history 등 임시 저장 목적으로 브라우저 임시 저장공간을 쓸 수 있다. 브라우저 임시 저장공간은 Session Storage와 Local Storage가 있다. Session Storage는 브라우저를 끄거나 일정 시간이 지나면 사라지고, Local Storage는 임시 저장공간을 청소하지 않는 이상 반 영구적으로 저장할 수 있다. 단, 크롬 기준 5MB 이하 텍스트 저장만 가능하다.
