@@ -53,17 +53,17 @@ source venv/bin/activate				# venv 가상환경 실행
 {: .no_toc }
 
 ```bash
-(venv) ~/django/backend>  python -m pip install --upgrade pip 	# pip 업데이트
-(venv) ~/django/backend>  pip install django 						# 장고 설치
-(venv) ~/django/backend>  pip install djangorestframework 		# DRF 설치
-(venv) ~/django/backend>  pip install django-cors-headers			# CORS HTTP 접근제어 규약 (추후 설명)
+(venv) ~/django>  python -m pip install --upgrade pip 	# pip 업데이트
+(venv) ~/django>  pip install django 						# 장고 설치
+(venv) ~/django>  pip install djangorestframework 		# DRF 설치
+(venv) ~/django>  pip install django-cors-headers			# CORS HTTP 접근제어 규약 (추후 설명)
 ```
 
 설치가 끝나면 Django 서버를 설치할 폴더를 만들고, 진입한다.
 
 ```bash
-(venv) ~/django/backend>  mkdir backend
-(venv) ~/django/backend>  cd backend
+(venv) ~/django>  mkdir backend
+(venv) ~/django>  cd backend
 ```
 
 djangoreactapi 라는 이름의 Django 프로젝트를 만든다. 마지막 점(.)은 상대경로로 현재 위치를 의미한다.
@@ -128,9 +128,18 @@ REST_FRAMEWORK = {
 
 ...
 
+# CORS_ORIGIN_WHITELIST 전체 추가
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3001',	# 추가 (React 서버 작동 주소 및 포트)
 ]
+
+...
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 추가
+    'django.middleware.common.CommonMiddleware',  # 추가
+    
+...
 
 TIME_ZONE = 'Asia/Seoul'	# 변경
 
