@@ -1,14 +1,14 @@
 ---
 layout: default
-title: RESTful API
+title: Django + RESTful API
 parent: React
 nav_order: 2
 last_modified_date: 2021-02-26
 ---
-# RESTful API (React X Django)
+# Django + Restful API
 {: .no_toc }
 
-RESTful API는 REST 아키텍처의 제약조건을 준수해 호출과 응답을 구성한 프로그래밍 언어 간 통신 방식입니다. 정보는 JSON, HTML, 텍스트 등의 형식으로 전송이 가능하며 인간과 머신이 모두 읽을 수 있는 형태이자, 언어와 상관 없이 쓸 수 있는 JSON 형식을 가장 많이 사용합니다. 이 글에선 Python의 Django 백엔드 서버와 React(+Axios) 프론트엔드 서버의 RESTful API 통신에 대해 다룹니다. 검색(Ctrl + F)으로 원하는 내용을 찾아보세요.
+Django는 Python 기반 웹 프레임워크이며 RESTful API는 REST 아키텍처의 제약조건을 준수해 호출과 응답을 구성한 프로그래밍 언어 간 통신 방식입니다. JSON, HTML, 텍스트 등 다양한 형식을 정보 송수신에 사용하지만 인간과 머신이 모두 읽을 수 있는 형태이자, 언어와 상관 없이 쓸 수 있는 JSON 형식을 가장 많이 사용합니다. 이 글에선 Python의 Django 백엔드 서버와 React(+Axios) 프론트엔드 서버의 RESTful API 통신에 대해 다룹니다. 검색(Ctrl + F)으로 원하는 내용을 찾아보세요.
 
 <details open markdown="block">
   <summary>
@@ -132,6 +132,10 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3001',	# 추가 (React 서버 작동 주소 및 포트)
 ]
+
+# CORS_ORIGIN 설정 전체 추가
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 ...
 
