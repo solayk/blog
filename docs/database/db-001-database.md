@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 데이터베이스
+title: Database
 nav_order: 4
 has_children: true
 permalink: docs/database
@@ -15,6 +15,4 @@ permalink: docs/database
 
 
 
-
-오라클 SQLPLUS
 
