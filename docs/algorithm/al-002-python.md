@@ -32,13 +32,26 @@ last_modified_date: 2021-03-23
 - 이중배열 sort
 
   data.sort(key=lambda x: x[1])
+  
+- 배열 데이터 타입 변환
+
+  numbers = list(map(str,numbers))
+
+  numbers = [str(x) for x in numbers]
+
+- map
+
+  - 파이썬 3.x: list(map(calc, ex)) 반드시 list 붙여야 리스트 형식 반환
+  - 파이썬 2.x: list 없이도 리스트 형식 반환
+
+
 
 ### dict
 {: .no_toc }
 
 from collections import Counter
 
-cnt = Counter([kind for name, kind in clothes])er
+cnt = Counter([kind for name, kind in clothes])
 
 from functools import reduce
 
@@ -92,7 +105,7 @@ Python의 Dictionary는 Hash 구조라 사전의 원소들을 O(1) 상수시간�
 
 
 
-## 예제: 완주하지 못한 선수
+### 예제: 완주하지 못한 선수
 {: .no_toc }
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/42576?language=python3)
 
@@ -137,7 +150,7 @@ def solution(participant,completion):
     return participant[len(participant)-1]
 ```
 
-배열 정렬을 쓴다면 sort 최적 알고리즘도 O(nlogn)에 비례하는 복잡도를 가진다.
+배열 정렬을 쓴다면 sort 최적 알고리즘도 O(N Log N)에 비례하는 복잡도를 가진다.
 
 ![완주(2)](https://user-images.githubusercontent.com/73984112/112096399-89c19600-8be1-11eb-86d4-5bdd09bbdf59.png)
 
@@ -164,9 +177,9 @@ def solution(phone_book):
     return answer
 ```
 
-- 배열 sort: O(n log n)
-- 문자열 비교: O(nlogn)
-- 이중 반복문: O(n^2)
+- 배열 sort: O(N Log N)
+- 문자열비교: O(N Log N)
+- 이중 반복문: O(N^2)
 
 
 
@@ -271,16 +284,158 @@ def solution(genres, plays):
 
 
 
-## 2. 탐욕법 Greedy Algorithm
+
+
+## 4. 정렬
+
+```python
+numbers.sort(key= lambda x: (x*4)[:4], reverse=True)
+temp = sorted(numbers,key= lambda x: (x*4)[:4],reverse=True)
+```
+
+
+
+### 예제: 가장 큰 수
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42746)
+
+<img src = "https://user-images.githubusercontent.com/73984112/112261247-d030f680-8cae-11eb-934e-ef50001045fe.png" width="500px">
+
+built-in function인 sort 함수는 문자열은 사전(=알파벳) 순서로 정렬하며 숫자는 오름차순으로 정렬한다.
+
+```python
+def solution(numbers):
+    numbers = list(map(str,numbers))
+    numbers.sort(key= lambda x: (x*3)[:4], reverse=True)
+    if numbers[0] == '0':
+        answer = '0'
+    else:
+        answer = ''.join(numbers)
+    return answer
+```
+
+3행 sort N Log N에 비례, 2, 4~7행 N에 비례 → 정렬을 하지 않고, 해결이 어려우므로 3행이 알고리즘 복잡도 결정 O(N Log N)
+
+(참고)
+
+```python
+import functools
+
+def comparator(a,b):
+    t1 = a+b
+    t2 = b+a
+    return (int(t1) > int(t2)) - (int(t1) < int(t2)) #  t1이 크면 1, t2가 크면 -1, 같으면 0
+
+def solution(numbers):
+    n = [str(x) for x in numbers]
+    n = sorted(n, key=functools.cmp_to_key(comparator),reverse=True)
+    answer = str(int(''.join(n)))
+    return answer
+```
+
+
+
+### 예제: K번째 수
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42748)
+
+```python
+def solution(array, commands):
+    answer = []
+    for itm in commands:
+        temp = sorted(array[(itm[0]-1):itm[1]])
+        answer.append(temp[itm[2]-1])
+    return answer
+```
+
+
+
+(참고)
+
+```python
+def solution(array, commands):
+    return list(map(lambda x:sorted(array[x[0]-1:x[1]])[x[2]-1], commands))
+```
+
+
+
+### 예제: H-Index
+{: .no_toc }
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42747)
+
+```python
+from collections import Counter
+import math
+
+def solution(citations):
+
+    n = len(citations)
+    avg = math.ceil(sum(citations)/n)
+    temp = Counter(citations)
+
+    cnt = sum([v for k, v in temp.items() if k > avg])
+
+    d = {}
+    for i in range(avg + 1):
+        d[i] = 0
+
+    for k, v in temp.items():
+        if k <= avg:
+            d[k] = v
+        else: continue
+
+    temp = {k:v for k, v in temp.items() if k <= avg}
+
+    for key, val in sorted(d.items(), reverse=True):
+        cnt += val
+        if key <= cnt and n - cnt <= cnt:
+            answer = key
+            break
+        else:
+            continue
+    return answer
+```
+
+
+
+(참고)
+
+```python
+def solution(citations):
+    citations = sorted(citations)
+    l = len(citations)
+    for i in range(l):
+        if citations[i] >= l-i:
+            return l-i
+    return 0
+```
+
+(참고)
+
+```python
+def solution(citations):
+    citations.sort(reverse=True)
+    answer = max(map(min, enumerate(citations, start=1)))
+    return answer
+```
+
+
+
+
+
+## 6. 탐욕법 Greedy Algorithm
 
 - 알고리즘 각 단계에서 그 순간에 최적이라고 생각하는 것 선택
-
 - 현재의 선택이 마지막 해답의 최적성을 해치지 않을 때
+- *모든 케이스를 순환하지 않고 복잡도를 N개로 낮출 수 있다.
 
 
 
 ### 예제: 체육복
 {: .no_toc }
+
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/42862)
 
 확인 대상이 작다면 배열로 처리하는 O(n) 복잡도 알고리즘으로 해결할 수 있다.
@@ -309,7 +464,7 @@ def solution(n, lost, reserve):
 
 2) 확인 대상 n이 클 경우
 
-built-in function sorted는 klogk 복잡도에 비례. set은 배열의 길이에 비례한다.
+built-in function sorted는 K log K 복잡도에 비례, set은 배열의 길이에 비례한다.
 
 ```python
 def solution(n, lost, reserve):
@@ -382,7 +537,31 @@ def solution(name):
 
 
 
+### 예제: 큰 수 만들기
+{: .no_toc }
 
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42883)
+
+```python
+def solution(number, k):
+    result = []
+    for i, n in enumerate(number):
+        while len(result) > 0 and result[-1] < n and k > 0:
+            result.pop()
+            k-= 1
+        if k == 0:
+            result += list(number[i:])
+            break
+        result.append(n)
+    result = result[:-k] if k > 0 else result
+    return ''.join(result)
+```
+
+11행이 필요한 이유는 test case "999"와 같이 같은 수가 반복될 경우 k에 2를 넣어도 999를 return 하므로 while 조건에서 확인하지 않는 result[-1] < n에 대한 처리가 때문이다.
+
+복잡도 O(N)
+
+문자열 number의 길이를 N이라고 하면, 이 알고리즘의 실행 시간은 N에 비례. 알고리즘 실행 시간이 무엇에 비례하는지는 while 순환문 안의 몸체가 얼마나 여러 번 실행되느냐에 달려 있고, for 문이 한번 돌때 while 문이 여러번 돌 수 있지만 그 합은 N 보다 클 수 없다. 
 
 
 
