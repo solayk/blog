@@ -1,7 +1,7 @@
 ---
 layout: default
-title: 빅데이터
-nav_order: 5
+title: Big Data
+nav_order: 6
 has_children: true
 permalink: docs/bigdata
 last_modified_date: 2021-01-28

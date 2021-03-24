@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 깃허브페이지
+title: Github Pages
 nav_order: 6
 has_children: false
 permalink: docs/githubpage

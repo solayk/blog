@@ -1,7 +1,7 @@
 ---
 layout: default
-title: 하둡
-parent: 빅데이터
+title: Hadoop
+parent: Big Data
 nav_order: 1
 last_modified_date: 2021-01-28
 ---

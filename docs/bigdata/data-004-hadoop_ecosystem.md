@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 하둡 에코시스템
-parent: 빅데이터
+parent: Big Data
 nav_order: 3
 last_modified_date: 2021-01-28
 ---

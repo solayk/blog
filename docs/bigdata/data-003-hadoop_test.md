@@ -1,7 +1,7 @@
 ---
 layout: default
-title: 하둡 맵리듀스
-parent: 빅데이터
+title: Map Reduce
+parent: Big Data
 nav_order: 2
 last_modified_date: 2021-01-28
 ---
