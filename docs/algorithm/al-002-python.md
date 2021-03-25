@@ -25,6 +25,7 @@ last_modified_date: 2021-03-23
 {: .no_toc }
 
 - 아스키코드: ord(문자), chr(숫자)
+- for ~ else: for 문 break 여부, break 되지 않으면 else 실행
 
 ### list
 {: .no_toc }
@@ -284,6 +285,97 @@ def solution(genres, plays):
 
 
 
+## 3. 힙 Heap
+
+우선 순위 큐를 위해 만들어진 완전 이진 트리(complete binary tree) 자료 구조로 상수시간에 최대/최소 원소를 빠르게 찾을 수 있다. 완전 이진 트리이므로 배열에 넣어 구현할 수 있다.
+
+<img src = "https://user-images.githubusercontent.com/73984112/112424890-87457480-8d78-11eb-839c-65821546d57d.png" width="400px">
+
+- 힙 구성 heapify O(N log N)
+- 삽입 insert O(log N)
+- 삭제 remove O(log N)
+- 정렬 heapsort O(N log N)
+- 우선 순위 큐 priority queue
+
+```python
+import heapq
+
+heapq.heapify(list) 배열 list로 부터 min heap 구성
+m = heapq.heappop(list)  min heap list에서 최소값 삭제(반환)
+heapq.heappush(list,x) min heap list에 원소 x 삽입
+```
+
+
+
+
+
+### 예제: 더 맵게 Scoville 지수
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42626)
+
+수가 하나 남을때까지 섞고(N-1) 결과 재정렬(N) 한다면 전체 복잡도는 O(N^2)에 비례한다. 만일 최소, 최대 원소를 빠르게 꺼낼 수 있는 구조라면 힙 Heap을 쓴다.
+
+(참고) 최소 힙 min heap 사용. 
+
+```python
+import heapq
+
+def solution(scoville, K):
+    answer = 0
+    heapq.heapify(scoville)
+
+    while True:
+        min1 = heapq.heappop(scoville)
+        if min1 >= K:
+            break
+        elif len(scoville) == 0:
+            answer = -1
+            break
+        min2 = heapq.heappop(scoville)
+        new_scoville = min1 + 2 * min2
+        heapq.heappush(scoville,new_scoville)
+        answer += 1
+
+    return answer
+```
+
+만일 순서대로 정렬된 배열을 이용하면, 한 음식과 다른 한 음식 (가장 scoville 지수가 낮은 두 개) 을 섞어서 새로운 음식이 만들어졌을 때 (새로운 원소가 생겨서 이것을 배열에 삽입해야 하므로) 두 가지 중 하나를 해야 한다. (1) 새로운 음식까지 포함해서 배열을 만들고 다시 정렬하거나 (2) 이미 정렬된 배열이 있으므로 이것을 순서대로 (또는 이진 탐색하여) 알맞은 위치를 결정하여 새 scoville 지수를 그 자리에 삽입하거나. 두 경우 모두, 배열을 재정비하는 데에는 배열의 길이에 비례하는 시간이 적어도 소요된다. 따라서 이 경우는 정렬된 배열을 이용하는 것보다는 "동적인 특성이 보다 우수한" heap 을 이용하는 것이 유리하다.
+
+"동적인 특성이 보다 우수한" 이라는 말은, heap 은 원소들의 삽입과 삭제 (삭제는 min 또는 max 값을 가지는 원소에 한하여) 연산이 효과적 (그리고 효율적) 으로 이루어질 수 있다는 뜻이다. 새로운 음식의 scoville 지수를 heap 에 삽입하는 데 걸리는 시간은, 원소의 수를 n 이라고 할 때 log(n) 에 비례한다. 선형으로 원소들을 늘어놓지 않고 트리의 형태 (2차원) 로 늘어놓음으로써 부가의 정보를 담을 수 있어서 이와 같이 우수한 성능 특성을 얻을 수 있다.
+
+하지만 heap 은 정렬된 상태의 배열보다 항상 우수하진 않다. Heap 에서는 최소 (또는 최대, heap 을 어떻게 구성하느냐에 따라) 원소를 꺼내는 것은 매우 효과적으로 할 수 있지만, 원소들 사이에 total ordering 이 매겨져 있지 않다. ("느슨한 ordering" 이라고 말할 수 있다.) 
+
+예를 들어, "주어진 n 개의 자연수들 중 k 번째로 작은 것을 찾아내시오."
+
+여러 가지 방법을 생각해 볼 수 있습니다:
+(1) 주어진 원소들 중 가장 작은 것을 선택하는 연산을 k 회 반복한다.
+(2) n 개의 원소들로 이루어진 배열을 정렬하고 그 중에서 k 번째에 해당하는 것을 고른다.
+(3) min heap 을 구성하고, 최소값을 꺼내는 동작을 k 번 반복한다.
+
+어떤 방식이 가장 효율적일까? 또, 위와 같은 종류의 문제에서 heap 을 구성한다고 했을 때 이 구성에 걸리는 시간 (점근식에 따른 복잡도 외에 코드의 동작에서 어떤 일들이 이루어지는지를 곰곰 따져 본다면) 및 최소 원소를 꺼내는 동작(이 때에도 트리의 구조를 조정하면서 heap의 성질을 만족하기 위하여 뭔가 해야 할 일이 있지요)에 걸리는 시간, 그와 비교하여 배열에 담아 정렬하는 데 소요되는 시간을 비교해봐야 한다.
+
+(추가) 최대 힙 max
+
+9행 print(heap) 출력 결과는 [(-8, 8), (-7, 7), (-5, 5), (-1, 1), (-3, 3), (-4, 4)]로 힙에 튜플(tuple)를 원소로 추가하거나 삭제하면, 튜플 내에서 맨 앞에 있는 값을 기준으로 최소 힙이 구성되는 원리를 이용한다. 최대 힙을 만들려면 각 값에 대한 우선 순위를 구한 후, `(우선 순위, 값)` 구조의 튜플(tuple)을 힙에 추가하거나 삭제한다.
+
+```python
+import heapq
+
+nums = [4, 1, 7, 3, 8, 5]
+heap = []
+
+for num in nums:
+  heapq.heappush(heap, (-num, num))  # (우선 순위, 값)
+print(heap)
+while heap:
+  print(heapq.heappop(heap)[1])  # index 1
+```
+
+
+
+
+
 
 
 ## 4. 정렬
@@ -297,7 +389,6 @@ temp = sorted(numbers,key= lambda x: (x*4)[:4],reverse=True)
 
 ### 예제: 가장 큰 수
 {: .no_toc }
-
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/42746)
 
 <img src = "https://user-images.githubusercontent.com/73984112/112261247-d030f680-8cae-11eb-934e-ef50001045fe.png" width="500px">
@@ -563,8 +654,215 @@ def solution(number, k):
 
 문자열 number의 길이를 N이라고 하면, 이 알고리즘의 실행 시간은 N에 비례. 알고리즘 실행 시간이 무엇에 비례하는지는 while 순환문 안의 몸체가 얼마나 여러 번 실행되느냐에 달려 있고, for 문이 한번 돌때 while 문이 여러번 돌 수 있지만 그 합은 N 보다 클 수 없다. 
 
+```python
+def solution(number, k):
+    stack = [number[0]]
+    for num in number[1:]:
+        while len(stack) > 0 and stack[-1] < num and k > 0:
+            k -= 1
+            stack.pop()
+        stack.append(num)
+    if k != 0:
+        stack = stack[:-k]
+    return ''.join(stack)
+```
+
+
+
+## 7. 동적계획법 Dynamic Programming
+
+재귀로 작은 부분 문제로 나누어 해를 조합하여 전체 답에 이르는 방식 (ex. Knapsack Problem)
+
+문제의 성질에 따라 탐색해야 하는 범위를 효과적으로 줄일 때 필요하다.
+
+
+
+### 예: 피보나치 수열
+{: .no_toc }
+
+(1) 재귀함수로 구현하면 복잡도가 지수 함수 형태 → 함수가 한번 호출되면 다시 두번 호출, O(2^N)
+
+```python
+def fibo(n):
+    return fibo(n-1) + fibo(n-2) if n >= 2 else n
+
+for n in range(1, 11):
+    print(n, fibo(n))		# f(0) = 0, f(1) = 1
+```
+
+(2) f(2), f(3), ... 계산을 해나가며 이전에 구한 해를 그대로 쓴다. → 복잡도 선형 함수 형태, O(N)
+
+
+
+### 예제: N으로 표현
+{: .no_toc }
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42895)
 
 
 
 
+<img src = "https://user-images.githubusercontent.com/73984112/112440889-2f196d00-8d8e-11eb-8a51-053692da0819.png" width="400px">
+
+<img src = "https://user-images.githubusercontent.com/73984112/112440969-45272d80-8d8e-11eb-84de-2f94addce377.png" width="400px">
+
+<img src = "https://user-images.githubusercontent.com/73984112/112441049-5708d080-8d8e-11eb-8971-a52be10b1cd6.png" width="500px">
+
+<img src = "https://user-images.githubusercontent.com/73984112/112442066-c67ec000-8d8e-11eb-8eba-1bbcd58883da.png" width="500px">
+
+<img src = "https://user-images.githubusercontent.com/73984112/112442271-02b22080-8d8f-11eb-8249-69ffb2db0c7c.png" width="500px">
+
+중요한 것은 이미 계산한 결과를 해로 가지고 있으므로 괄호를 하고 연산한 것과 동일하며, 괄호가 없이 연산한 것도 포함되어 있도록 완전하게 나열했다.
+
+<img src = "https://user-images.githubusercontent.com/73984112/112442960-ba473280-8d8f-11eb-88ce-e3d6911d9430.png" width="500px">
+
+(참고) for 순환문이 4겹 이지만, 중복된 것은 제외하고 답을 찾아간다. 경우의 수는 폭발적으로 증가하지만, 불필요한 연산을 줄이고 끝날 수 있다.
+
+```python
+def solution(N, number):
+    s = [set() for x in range(8)]
+    for i, x in enumerate(s, start=1):
+        x.add(int(str(N)*i))
+    for i in range(1, len(s)):
+        for j in range(i):
+            for op1 in s[j]:
+                for op2 in s[i-j-1]:
+                    s[i].add(op1 + op2)
+                    s[i].add(op1 - op2)
+                    s[i].add(op1 * op2)
+                    if op2 != 0: s[i].add(op1 // op2)
+        if number in s[i]:
+            answer = i + 1
+            break
+    else:
+        answer = -1
+    return answer
+```
+
+만일 N = 1, number = 1 케이스를 통과하려면 answer는 1이지만, 위 알고리즘은 2가 나온다.
+
+이를 방지하려면 5행 뒤에 아래 구문을 추가해야 하지만, 연산이나 조합을 전혀 하지 않는 케이스라 논란의 여지가 있다.
+
+```python
+if number in s[i-1]:
+    return i
+```
+
+
+
+만일 위 2행에서 s = [set()]*8 로 생성하면 set()으로 한 객체 생성 후 8번 복사한 것이므로 아래와 같이 실행하면 전체 요소에 동일하게 반영된다.
+
+```python
+s = [set()] * 8
+print(s)
+# [set([]), set([]), set([]), set([]), set([]), set([]), set([]), set([])]
+s[0].add(1)
+print(s)
+# [set([1]), set([1]), set([1]), set([1]), set([1]), set([1]), set([1]), set([1])]
+```
+
+
+
+(참고)
+
+```python
+def solution(N, number):
+    S = [{N}]
+    for i in range(2, 9):
+        lst = [int(str(N)*i)]
+        for X_i in range(0, int(i / 2)):
+            for x in S[X_i]:
+                for y in S[i - X_i - 2]:
+                    lst.append(x + y)
+                    lst.append(x - y)
+                    lst.append(y - x)
+                    lst.append(x * y)
+                    if x != 0: lst.append(y // x)
+                    if y != 0: lst.append(x // y)
+        if number in set(lst):
+            return i
+        S.append(lst)
+    return -1def solution(N, number):
+    S = [{N}]
+    for i in range(2, 9):
+        lst = [int(str(N)*i)]
+        for X_i in range(0, int(i / 2)):
+            for x in S[X_i]:
+                for y in S[i - X_i - 2]:
+                    lst.append(x + y)
+                    lst.append(x - y)
+                    lst.append(y - x)
+                    lst.append(x * y)
+                    if x != 0: lst.append(y // x)
+                    if y != 0: lst.append(x // y)
+        if number in set(lst):
+            return i
+        S.append(lst)
+    return -1
+```
+
+
+
+## 8. 깊이/너비 우선 탐색 DFS/BFS
+
+- 그래프(graphs)
+  - 정점(vertex, node)과 간선(edge, link)
+  - 유향(directed) 그래프와 무향(undirected) 그래프
+- 스택(stack), 큐(queue)
+
+
+
+### (1) 깊이 우선 탐색(DFS; Depth-First Search)
+
+한 정점에서 인접한 모든(아직 방문하지 않은) 정점을 방문하되, 각 인접 정점을 기준으로 깊이 우선 탐색을 끝낸 후 다음 정점으로 진행
+
+<img src = "https://user-images.githubusercontent.com/73984112/112478973-df4f9b80-8db7-11eb-86da-56abf2c99c75.png" width="300px">
+
+스택으로 어느 정점에서 DFS 하고 있는지 기억하고 되돌아감
+
+
+
+### (2) 너비 우선 탐색(BFS; Breadth-First Search)
+
+한 정점에서 인접한 모든(아직 방문하지 않은) 정점을 방문하고, 방문한 각 인접 정점을 기준으로(방문한 순서에 따라) 또 다시 너비 우선 탐색 진행
+
+<img src = "https://user-images.githubusercontent.com/73984112/112479431-613fc480-8db8-11eb-857f-e53c85fdced5.png" width="300px">
+
+큐로 어느 정점에서 HFS 해야 하는지 기억하고 되돌아감
+
+
+
+
+
+### 예: 여행경로
+{: .no_toc }
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/43164)
+
+재귀적인 성질을 가진 한번에 그리기 → 깊이 우선 탐색 DFS = 스택
+
+*실패하는 경우 없다고 언급
+
+** 스택에서 꺼낸 것의 역순이 우리가 원하는 순서
+
+
+
+(참고) 정렬(sort)해 stack에서 마지막 데이터만 건드리므로 5행 sort가 전체 복잡도를 결정한다. → O(N log N)
+
+```python
+def solution(tickets):
+    routes = {}
+    for t in tickets:
+        routes[t[0]] = routes.get(t[0],[]) + [t[1]]
+    for r in routes:
+        routes[r].sort(reverse=True)
+    stack = ["ICN"]
+    path = []
+    while len(stack) > 0:
+        top = stack[-1]
+        if top not in routes or len(routes[top]) == 0:
+            path.append(stack.pop())
+        else:
+            stack.append(routes[top][-1])
+            routes[top] = routes[top][:-1]  # pop also available
+    return path[::-1]
+```
 
