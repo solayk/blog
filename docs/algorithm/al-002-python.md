@@ -24,8 +24,22 @@ last_modified_date: 2021-03-23
 ### basic
 {: .no_toc }
 
+- 입력
+  - n, m = map(int, input().split())
+  
+  - n, m = map(int, sys.stdin.readline().split())
+  
+  - data = list(map(int, sys.stdin.readline().split()))
+  
+  - data= []
+  
+    for i in range(n):
+  
+    ​    data.append(list(map(int, input())))
 - 아스키코드: ord(문자), chr(숫자)
 - for ~ else: for 문 break 여부, break 되지 않으면 else 실행
+
+
 
 ### list
 {: .no_toc }
@@ -45,7 +59,15 @@ last_modified_date: 2021-03-23
   - 파이썬 3.x: list(map(calc, ex)) 반드시 list 붙여야 리스트 형식 반환
   - 파이썬 2.x: list 없이도 리스트 형식 반환
 
+- index 검색
+  - 작은 값 data.index(min)
+  - 전체 값 배열 [i for i, value in enumerate(data) if value == min]
+  
+- 깊은 복사
 
+  import copy
+
+  copy.deepcopy(list)
 
 ### dict
 {: .no_toc }
@@ -57,6 +79,16 @@ cnt = Counter([kind for name, kind in clothes])
 from functools import reduce
 
 answer = reduce(lambda x, y: x*(y+1), cnt.values(), 1) - 1
+
+- Key 정렬
+
+  sorted(dict.items(), reverse = True)
+
+- Value 정렬
+
+  sorted(dict.items(), key=operator.itemgetter(1))
+
+  만일 0 이라면 Key 기준
 
 ### comprehension
 {: .no_toc }
@@ -427,6 +459,38 @@ def solution(numbers):
 
 
 
+### 예제: 작은 수 만들기
+{: .no_toc }
+
+[[링크]](https://level.goorm.io/exam/47881/%EA%B7%BC%EB%AC%B5%EC%9E%90%ED%9D%91/quiz/1)
+
+입력 시 여러 줄 입력 받을땐 input 대신 sys.stdin.readline()를 써서 [시간초과를 방지](https://velog.io/@yeseolee/Python-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%9E%85%EB%A0%A5-%EC%A0%95%EB%A6%ACsys.stdin.readline)한다. 
+
+```python
+import sys
+n, k = map(int, sys.stdin.readline().split())
+data = list(map(int, sys.stdin.readline().split()))
+
+start_idx = data.index(min(data))
+cnt = []
+for i in range(k):
+    if start_idx - i < 0: break
+    front, back = data[:start_idx-i], data[start_idx-i:]
+    front_cnt = len(front) // (k-1) + (1 if len(front) % (k-1) else 0)
+    if len(back) <= k:
+        back_cnt = 1
+    else:
+        back_cnt = 1 + (len(back) - k) // (k-1) + (1 if (len(back) - k) % (k-1) else 0)
+    cnt.append(front_cnt + back_cnt)
+print(min(cnt))
+```
+
+
+
+
+
+
+
 ### 예제: K번째 수
 {: .no_toc }
 
@@ -454,6 +518,7 @@ def solution(array, commands):
 
 ### 예제: H-Index
 {: .no_toc }
+
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/42747)
 
 ```python
@@ -511,6 +576,61 @@ def solution(citations):
     answer = max(map(min, enumerate(citations, start=1)))
     return answer
 ```
+
+
+
+## 5. 완전탐색
+
+
+### 예제: 모의고사
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42840)
+
+```python
+def solution(answers):
+    l = len(answers)
+    p = [[1,2,3,4,5], [2,1,2,3,2,4,2,5], [3,3,1,1,2,2,4,4,5,5]]
+    np =[ (l // len(x)) * x + x[:(l % len(x))] for x in p ]
+    answers = [answers] * 3
+    calc = [len([a - b for a, b in zip(x, y) if a - b == 0]) for x, y in zip(np, answers)]
+    answer = [ idx + 1 for idx, n in enumerate(calc) if n == max(calc) and n != 0]
+    return answer
+
+#####
+a = [1,2,3,4,5]
+b = [1,3,2,4,2]
+print(solution(a))     # [1]
+print(solution(b))     # [1,2,3]
+```
+
+
+
+(참고) 패턴 길이보다 answers가 길 경우 answers의 index를 패턴 길이로 나눈 몫도 반복된다.
+
+```python
+def solution(answers):
+    p = [[1, 2, 3, 4, 5],
+         [2, 1, 2, 3, 2, 4, 2, 5],
+         [3, 3, 1, 1, 2, 2, 4, 4, 5, 5]]
+    s = [0] * len(p)
+
+    for q, a in enumerate(answers):
+        for i, v in enumerate(p):
+            if a == v[q % len(v)]:
+                s[i] += 1
+    return [i + 1 for i, v in enumerate(s) if v == max(s)]
+```
+
+
+
+### 예제: 소수 찾기
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42839)
+
+
+
 
 
 
@@ -696,6 +816,7 @@ for n in range(1, 11):
 
 ### 예제: N으로 표현
 {: .no_toc }
+
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/42895)
 
 
@@ -802,6 +923,35 @@ def solution(N, number):
 
 
 
+### 예제: 가장 큰 정사각형 찾기
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/12905)
+
+
+
+```python
+def solution(area):
+    print(area)
+    for i in range(1, len(area)):
+        for j in range(1, len(area[0])):
+            if area[i][j] >= 1:  # 0이 아닐 때만 값 업데이트 : 이게 테스트 통과의 관건!
+                area[i][j] = min(area[i - 1][j], area[i][j - 1], area[i - 1][j - 1]) + 1
+            print(area)
+    return max([num for row in area for num in row]) ** 2  # list comprehension 사용 - 전체 배열의 최대값 구하기 ^2
+
+n, m = map(int, input().split())
+area = []
+for i in range(n):
+    area.append(list(map(int, input())))
+
+print(solution(area))
+```
+
+
+
+
+
 ## 8. 깊이/너비 우선 탐색 DFS/BFS
 
 - 그래프(graphs)
@@ -823,7 +973,9 @@ def solution(N, number):
 
 ### (2) 너비 우선 탐색(BFS; Breadth-First Search)
 
-한 정점에서 인접한 모든(아직 방문하지 않은) 정점을 방문하고, 방문한 각 인접 정점을 기준으로(방문한 순서에 따라) 또 다시 너비 우선 탐색 진행
+한 정점에서 인접한 모든(아직 방문하지 않은) 정점을 방문하고, 방문한 각 인접 정점을 기준으로(방문한 순서에 따라) 또 다시 너비 우선 탐색 진행.
+
+간선의 비용이 모두 같을 때, 최단거리 계산.
 
 <img src = "https://user-images.githubusercontent.com/73984112/112479431-613fc480-8db8-11eb-857f-e53c85fdced5.png" width="300px">
 
@@ -835,6 +987,7 @@ def solution(N, number):
 
 ### 예: 여행경로
 {: .no_toc }
+
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/43164)
 
 재귀적인 성질을 가진 한번에 그리기 → 깊이 우선 탐색 DFS = 스택
@@ -864,5 +1017,116 @@ def solution(tickets):
             stack.append(routes[top][-1])
             routes[top] = routes[top][:-1]  # pop also available
     return path[::-1]
+```
+
+
+
+### 예: 미로 탈출
+{: .no_toc }
+
+[[링크: 유튜브]](https://www.youtube.com/watch?v=e7_H8SLZlHY)
+
+5 6
+
+101010
+
+111111
+
+000001
+
+111111
+
+111111
+
+```python
+from collections import deque
+import copy
+
+def bfs(x,y):
+    queue = deque()
+    queue.append((x, y))
+    while queue:
+        x, y = queue.popleft()
+        for i in range(3):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= m:
+                continue
+            if graph[nx][ny] == 0:
+                continue
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = graph[x][y] + 1
+                queue.append((nx,ny))
+    return min(graph[n - 1])
+
+n, m = map(int, input().split())
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+dx = [1, 0, 0]
+dy = [0, -1, 1]
+
+temp = copy.deepcopy(graph)
+print(bfs(0,0))
+
+graph = copy.deepcopy(temp)
+print(bfs(0,2))
+```
+
+
+
+
+
+
+## 11. 기타
+
+### 예: 사은품 교환하기
+{: .no_toc }
+
+[[링크]](https://devth-preview.goorm.io/exam/53763/%EC%A3%BC-%EA%B5%AC%EB%A5%B4%EB%AF%B8-%EC%8B%A0%EC%9E%85-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EA%B3%B5%EA%B0%9C%EC%B1%84%EC%9A%A9-%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8/quiz/3)
+
+```python
+import sys
+
+t = int(input())
+case = []
+for i in range(t):
+        a,b = map(int, sys.stdin.readline().split())
+        case.append([a,b])
+
+result = []
+for n in case:
+    first = n[0]
+    second = n[1]
+    max1 = first // 5
+    max2 = (first + second) // 12
+    max = min(max1,max2)
+
+    while first + second < 12 * max:
+        if max == 0: break
+        else: max -= 1
+
+    print(max)
+```
+
+
+
+### 예: 멀쩡한 사각형
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/62048?language=python3)
+
+대각선이 지나가는 사각형은 w + h - 최대공약수
+
+```python
+def solution(w,h):
+    def gcd(w,h):
+        return  w if h == 0 else gcd(h, w%h)
+    return w * h - (w + h - gcd(w,h))
+
+#####
+
+print(solution(8,12))		# 80
 ```
 
