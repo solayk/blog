@@ -59,7 +59,12 @@ last_modified_date: 2021-03-23
   - 파이썬 3.x: list(map(calc, ex)) 반드시 list 붙여야 리스트 형식 반환
   - 파이썬 2.x: list 없이도 리스트 형식 반환
 
+- 값 확인
+  
+  - if item in list: ...
+  
 - index 검색
+  
   - 작은 값 data.index(min)
   - 전체 값 배열 [i for i, value in enumerate(data) if value == min]
   
@@ -380,7 +385,7 @@ def solution(scoville, K):
 
 예를 들어, "주어진 n 개의 자연수들 중 k 번째로 작은 것을 찾아내시오."
 
-여러 가지 방법을 생각해 볼 수 있습니다:
+여러 가지 방법을 생각해 볼 수 있다:
 (1) 주어진 원소들 중 가장 작은 것을 선택하는 연산을 k 회 반복한다.
 (2) n 개의 원소들로 이루어진 배열을 정렬하고 그 중에서 k 번째에 해당하는 것을 고른다.
 (3) min heap 을 구성하고, 최소값을 꺼내는 동작을 k 번 반복한다.
@@ -631,6 +636,79 @@ def solution(answers):
 
 
 
+```python
+from itertools import permutations
+
+def is_prime_number(x):
+    for i in range(2, x):
+        if x % i == 0:
+            return False
+    return True
+
+def solution(numbers):
+    items = list(numbers)
+    p = set()
+    for i in range(1, len(numbers) + 1):
+        for j in list(permutations(items, i)):
+            p.add(int("".join(j)))
+    answer = 0
+    for n in list(p):
+        if n != 0 and n != 1 and is_prime_number(n):
+            print(n)
+            answer += 1
+
+    return answer
+```
+
+
+
+(참고) | 는 [or 연산자](https://velog.io/@nayoon-kim/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%97%B0%EC%82%B0%EC%9E%90)이며 union을 뜻한다. 하지만 원본이 update 되지 않으나 |=는 원본이 업데이트 된다. [파이썬 3.9 공식문서를 참고](https://docs.python.org/3.9/whatsnew/3.9.html#dictionary-merge-update-operators)한다.
+
+7행 range는 max(a)의 제급근까지의 모든 수를 확인해 범위를 줄일 수 있다. 만일 이 방법도 비효율적이라면 [에라토스테네스의 체](https://velog.io/@koyo/python-is-prime-number) 방법도 있다.
+
+```python
+from itertools import permutations
+def solution(n):
+    a = set()
+    for i in range(len(n)):
+        a |= set(map(int, map("".join, permutations(list(n), i + 1))))
+    a -= set(range(0, 2))
+    for i in range(2, int(max(a) ** 0.5) + 1):
+        a -= set(range(i * 2, max(a) + 1, i))
+    return len(a)
+```
+
+
+
+### 예제: 카펫
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/42842)
+
+```python
+def solution(brown, yellow):
+    total = yellow + brown
+    answer = []
+    for i in range(3, total):
+        if total % i != 0:
+            continue
+        if (i + total // i) * 2 - 4 == brown and (i - 2) * (total // i - 2) == yellow:
+            answer = [i, total // i]
+
+    return answer
+```
+
+(참고) 소수와 마찬가지로 제곱근까지 확인하는 것으로 범위를 줄일 수 있다. 
+
+```python
+def solution(brown, yellow):
+    for i in range(1, int(yellow**(1/2))+1):
+        if yellow % i == 0:
+            if 2*(i + yellow//i) == brown-4:
+                return [yellow//i+2, i+2]
+```
+
+
 
 
 
@@ -800,7 +878,7 @@ def solution(number, k):
 ### 예: 피보나치 수열
 {: .no_toc }
 
-(1) 재귀함수로 구현하면 복잡도가 지수 함수 형태 → 함수가 한번 호출되면 다시 두번 호출, O(2^N)
+1.. 재귀함수로 구현하면 복잡도가 지수 함수 형태 → 함수가 한번 호출되면 다시 두번 호출, O(2^N)
 
 ```python
 def fibo(n):
@@ -810,7 +888,24 @@ for n in range(1, 11):
     print(n, fibo(n))		# f(0) = 0, f(1) = 1
 ```
 
-(2) f(2), f(3), ... 계산을 해나가며 이전에 구한 해를 그대로 쓴다. → 복잡도 선형 함수 형태, O(N)
+2.. f(2), f(3), ... 계산을 해나가며 이전에 구한 해를 그대로 쓴다. → 복잡도 선형 함수 형태, O(N) [출처](https://shoark7.github.io/programming/algorithm/%ED%94%BC%EB%B3%B4%EB%82%98%EC%B9%98-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%84-%ED%95%B4%EA%B2%B0%ED%95%98%EB%8A%94-5%EA%B0%80%EC%A7%80-%EB%B0%A9%EB%B2%95.html)
+
+```python
+def fibo(n):
+    if n < 2:
+        return n
+    cache = [0 for _ in range(n+1)]
+    cache[1] = 1
+    
+    for i in range(2, 100+1):
+        cache[i] = cache[i-1] + cache[i-2]
+
+    return cache[n]
+
+print(fibo(100))
+```
+
+
 
 
 
@@ -923,12 +1018,12 @@ def solution(N, number):
 
 
 
+
+
 ### 예제: 가장 큰 정사각형 찾기
 {: .no_toc }
 
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/12905)
-
-
 
 ```python
 def solution(area):
@@ -947,6 +1042,113 @@ for i in range(n):
 
 print(solution(area))
 ```
+
+
+
+
+
+### 예제: 정수 삼각형
+{: .no_toc }
+
+[[링크]](https://programmers.co.kr/learn/courses/30/lessons/43105)
+
+❌ BFS로 시도했지만 "시간 초과" 실패
+
+```python
+from collections import deque
+
+def solution(triangle):
+    answer = []
+    stack = deque([(0,0,0)])
+    while stack:
+        sum, flr, idx = stack.popleft()
+        if flr == len(triangle):
+            answer.append(sum)
+        else:
+            num = triangle[flr][idx]
+            stack.append((sum + num, flr + 1, idx))
+            stack.append((sum + num, flr + 1, idx + 1))
+    return max(answer)
+```
+
+📚 참고) out of index 회피를 위해 이중 for 문에서 i 범위를 j 에서 제한하고, 배열 앞뒤에 0 붙임
+
+```python
+def solution(triangle):
+    triangle = [[0] + line + [0] for line in triangle]
+    
+    for i in range(1, len(triangle)):
+        for j in range(1, i+2):
+            triangle[i][j] += max(triangle[i-1][j-1], triangle[i-1][j])
+            
+    return max(triangle[-1])
+
+#####
+
+print(solution([[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]))
+```
+
+
+
+
+
+### 예제: 등굣길
+{: .no_toc }
+
+[[링크 - 프로그래머스]](https://programmers.co.kr/learn/courses/30/lessons/42898)
+
+📚 참고) 
+
+```python
+def solution(m, n, puddles):
+    dynamic = [[0] * (m+1) for _ in range(n+1)]  #왼쪽, 위로 한줄씩 만들어서 IndexError 방지
+
+    dynamic[1][1] = 1  # 초기값 지정
+    for i in range(1, n + 1):  # 위 -> 아래 이동
+        for j in range(1, m + 1):  # 왼쪽 -> 오른쪽 이동
+            if i == 1 and j == 1:  # 초기값이 변경되는 것을 방지
+                continue
+            if [j, i] in puddles:  # 웅덩이가 존재할 경우
+                dynamic[i][j] = 0
+            else:  # 웅덩이가 없을 경우
+                dynamic[i][j] = dynamic[i-1][j] + dynamic[i][j-1]
+    return dynamic[-1][-1] % 1000000007
+
+#####
+
+print(solution(4, 3, [[2,2]]))    # 4
+```
+
+📚 참고) dict, 재귀
+
+```python
+def solution(m, n, puddles):
+    answer = 0
+    info = dict([((2, 1), 1), ((1, 2), 1)]) # 초기 시작 값
+
+    for puddle in puddles: # 물 웅덩이들의 좌표를 차례로 가져옴
+        info[tuple(puddle)] = 0 # 물 웅덩이의 좌표를 키 값에 대해 0이란 값을 지정
+
+    def func(m, n): # 최단경로를 구하는 재귀 함수
+        if m < 1 or n < 1: # m이나 n이 1보다 작을 경우
+            return 0 # 0을 반환
+        if (m, n) in info: # 키 값이 (m, n)인 값이 info에 존재할 경우
+            return info[(m, n)] # 키 값에 대비되는 값을 반환. 즉, 웅덩이일 경우 0 반환
+        # setdefault를 이용
+        # (m, n)이 존재하면 (m, n)을 반환하고 아닐 경우는 2번째 인자를 반환
+        # 2번째 인자가 반환되면 재귀함수의 역할을 하게 된다.
+        return info.setdefault((m, n), func(m - 1, n) + func(m, n - 1))
+    return func(m, n) % 1000000007
+
+#####
+
+print(solution(4, 3, [[2,2]]))    # 4
+```
+
+
+
+
+
 
 
 
@@ -985,7 +1187,7 @@ print(solution(area))
 
 
 
-### 예: 여행경로
+### 예: 여행경로 (DFS)
 {: .no_toc }
 
 [[링크]](https://programmers.co.kr/learn/courses/30/lessons/43164)
@@ -1072,6 +1274,186 @@ print(bfs(0,0))
 
 graph = copy.deepcopy(temp)
 print(bfs(0,2))
+```
+
+
+
+### 예: 타겟 넘버 (BFS)
+{: .no_toc }
+
+[[링크: 프로그래머스]](https://programmers.co.kr/learn/courses/30/lessons/43165)
+
+📚 참고) BFS, queue에 (합, 인덱스) 튜플을 넣어 2^N 경우의 수를 동시에 처리한다.
+
+```python
+import collections
+
+def solution(numbers, target):
+    answer = 0
+    stack = collections.deque([(0, 0)])
+    while stack:
+        current_sum, num_idx = stack.popleft()
+        if num_idx == len(numbers):
+            if current_sum == target:
+                answer += 1
+        else:
+            number = numbers[num_idx]
+            stack.append((current_sum+number, num_idx + 1))
+            stack.append((current_sum-number, num_idx + 1))
+    return answer
+
+#####
+
+print(solution([1, 1, 1, 1, 1], 3))     # 5
+```
+
+📚 참고) DFS, 재귀로 (합, 인덱스, 대상, 값)을 바꿔가며 2^N 경우의 수를 모두 확인한다.
+
+```python
+answer = 0
+
+def DFS(idx, numbers, target, value):
+    global answer
+    N = len(numbers)
+    if(idx== N and target == value):
+        answer += 1
+        return
+    if(idx == N):
+        return
+    DFS(idx+1,numbers,target,value+numbers[idx])
+    DFS(idx+1,numbers,target,value-numbers[idx])
+
+def solution(numbers, target):
+    global answer
+    DFS(0,numbers,target,0)
+    return answer
+
+#####
+
+print(solution([1, 1, 1, 1, 1], 3))     # 5
+```
+
+📚 참고) 재귀로 numbers를 popleft 해서 계산한다.
+
+```python
+def solution(numbers, target):
+    if not numbers and target == 0 :
+        return 1
+    elif not numbers:
+        return 0
+    else:
+        return solution(numbers[1:], target-numbers[0]) + solution(numbers[1:], target+numbers[0])
+```
+
+
+
+
+
+
+### 예: 네트워크
+{: .no_toc }
+
+[[링크: 프로그래머스]](https://programmers.co.kr/learn/courses/30/lessons/43162)
+
+📚 참고) DFS
+
+```python
+def solution(n, computers):
+    answer = 0
+    visited = [False for i in range(n)]
+    for com in range(n):
+        if visited[com] == False:
+            dfs(n, computers, com, visited)
+            answer += 1
+    print(visited)
+    return answer
+
+def dfs(n, computers, com, visited):
+    visited[com] = True
+    for connect in range(n):
+        if connect != com and computers[com][connect] == 1:
+            if visited[connect] == False:
+                dfs(n, computers, connect, visited)
+
+#####                
+                
+# print(solution(3,[[1, 1, 0], [1, 1, 0], [0, 0, 1]]))    # 2
+# print(solution(3,[[1, 1, 0], [1, 1, 1], [0, 1, 1]]))    # 1
+print(solution(6,[[1, 0, 1, 1, 0, 0], [0, 1, 0, 0, 1, 1], [1, 0, 1, 1, 1, 1], [1, 0, 1, 1, 1, 1], [0, 1, 1, 1, 1, 1], [0, 1, 1, 1, 1, 1]]))    # 1
+```
+
+📚 참고) BFS, queue에 쌓인 케이스 모두 처리해 for 반복문 케이스를 줄인다.
+
+```python
+def solution(n, computers):
+    answer = 0
+    visited = [False for i in range(n)]
+    for com in range(n):
+        if visited[com] == False:
+            bfs(n, computers, com, visited)
+            answer += 1
+    return answer
+
+def bfs(n, computers, com, visited):
+    visited[com] = True
+    queue = []
+    queue.append(com)
+    while len(queue) != 0:
+        com = queue.pop(0)
+        visited[com] = True
+        for connect in range(n):
+            if connect != com and computers[com][connect] == 1:
+                if visited[connect] == False:
+                    queue.append(connect)
+```
+
+📚 참고) 플루이드-워셜 알고리즘
+
+```python
+def solution(n, computers):
+    temp = []
+    for i in range(n):
+        temp.append(i)
+    for i in range(n):
+        for j in range(n):
+            if computers[i][j]:
+                for k in range(n):
+                    if temp[k] == temp[i]:
+                        temp[k] = temp[j]
+    return len(set(temp))
+```
+
+
+### 예: 단어 변환
+{: .no_toc }
+
+[[링크: 프로그래머스]](https://programmers.co.kr/learn/courses/30/lessons/43163)
+
+📚 참고) 
+
+```python
+def solution(begin, target, words):
+    answer = 0
+    queue = [begin]
+    while True:
+        tmp_q = []
+        for word_1 in queue:
+            if word_1 == target:
+                return answer
+            for word_2_idx in range(len(words)-1, -1, -1):
+                word_2 = words[word_2_idx]
+                difference = sum([x != y for x, y in zip(word_1, word_2)])
+                if difference == 1:
+                    tmp_q.append(words.pop(word_2_idx))
+        if not tmp_q:
+            return 0
+        queue = tmp_q
+        answer += 1
+        
+#####
+
+print(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]))   # 4
+print(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log"]))          # 0
 ```
 
 
